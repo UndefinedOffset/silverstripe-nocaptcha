@@ -17,8 +17,15 @@ If you prefer you may also install using composer:
 composer require undefinedoffset/silverstripe-nocaptcha
 ```
 
+After installing the module via composer or manual install you must set the spam protector to NocaptchaProtector, this needs to be set in your site's config file normally this is mysite/_config/config.yml.
+```yml
+FormSpamProtectionExtension:
+    default_spam_protector: NocaptchaProtector
+```
+
+
 ## Configuration
-There are multiple configuration options for the field, you must set the site_key and the secret_key which you can get from the [reCAPTCHA page](https://www.google.com/recaptcha).
+There are multiple configuration options for the field, you must set the site_key and the secret_key which you can get from the [reCAPTCHA page](https://www.google.com/recaptcha). These configuration options must be added to your site's yaml config typically this is mysite/_config/config.yml.
 ```yml
 NocaptchaField:
     site_key: "YOUR_SITE_KEY" #Your site key (required)
