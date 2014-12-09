@@ -98,7 +98,7 @@ class NocaptchaField extends FormField {
      */
     public function validate($validator) {
         if(!isset($_REQUEST['g-recaptcha-response'])) {
-            $validator->validationError($this->name, _t('NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'));
+            $validator->validationError($this->name, _t('NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), 'validation');
             return false;
         }
         
@@ -129,11 +129,11 @@ class NocaptchaField extends FormField {
         
         if(is_array($response)) {
             if(array_key_exists('success', $response) && $response['success']==false) {
-                $validator->validationError($this->name, _t('NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'));
+                $validator->validationError($this->name, _t('NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), 'validation');
                 return false;
             }
         }else {
-            $validator->validationError($this->name, _t('NocaptchaField.VALIDATE_ERROR', '_Captcha could not be validated'));
+            $validator->validationError($this->name, _t('NocaptchaField.VALIDATE_ERROR', '_Captcha could not be validated'), 'validation');
             return false;
         }
         
