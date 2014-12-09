@@ -133,7 +133,7 @@ class NocaptchaField extends FormField {
                 return false;
             }
         }else {
-            $validator->validationError($this->name, _t('Nocaptcha.VALIDATE_ERROR', '_Captcha could not be validated'));
+            $validator->validationError($this->name, _t('NocaptchaField.VALIDATE_ERROR', '_Captcha could not be validated'));
             return false;
         }
         
