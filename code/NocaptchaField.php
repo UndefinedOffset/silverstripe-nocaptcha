@@ -83,11 +83,22 @@ class NocaptchaField extends FormField {
             user_error('You must configure Nocaptcha.site_key and Nocaptcha.secret_key, you can retrieve these at https://google.com/recaptcha', E_USER_ERROR);
         }
         
-        
-        Requirements::javascript('https://www.google.com/recaptcha/api.js?render=explicit&hl='.i18n::get_lang_from_locale(i18n::get_locale()).'&onload=noCaptchaFieldRender');
         Requirements::javascript(NOCAPTCHA_BASE.'/javascript/NocaptchaField.js');
-        Requirements::customScript("var _noCaptchaFields=_noCaptchaFields || [];_noCaptchaFields.push('".$this->getName()."');");
-        
+        Requirements::customScript(
+            "var _noCaptchaFields=_noCaptchaFields || [];_noCaptchaFields.push('".$this->getName()."');"
+        );
+        Requirements::customScript(
+            "(function() {\n" .
+            "    var gr = document.createElement('script'); gr.type = 'text/javascript'; gr.async = true;\n" .
+            "    gr.src = ('https:' == document.location.protocol ? 'https://www' : 'http://www') + " .
+            "'.google.com/recaptcha/api.js?render=explicit&hl=" .
+            i18n::get_lang_from_locale(i18n::get_locale()) .
+            "&onload=noCaptchaFieldRender';\n" .
+            "    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gr, s);\n" .
+            "})();\n",
+            'NocaptchaField-lib'
+        );
+
         return parent::Field($properties);
     }
     
