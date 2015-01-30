@@ -1,26 +1,26 @@
 {
-	"name": "undefinedoffset/silverstripe-nocaptcha",
-	"description": "A spam protector and form field using the new Google's reCAPTCHA 2 aka No Captcha",
-	"type": "silverstripe-module",
-	"keywords": ["silverstripe", "recaptcha", "recaptcha2", "nocaptcha", "spamprotection"],
+    "name": "undefinedoffset/silverstripe-nocaptcha",
+    "description": "A spam protector and form field using the new Google's reCAPTCHA 2 aka No Captcha",
+    "type": "silverstripe-module",
+    "keywords": ["silverstripe", "recaptcha", "recaptcha2", "nocaptcha", "spamprotection"],
     "license": "BSD-3-Clause",
-	"authors": [
-		{
-			"name": "Ed Chipman",
-			"homepage": "http://www.edchipman.ca",
-			"role": "Developer"
-		}
-	],
-	"require":
-	{
-		"silverstripe/framework": ">=3.1.1,<3.2",
+    "authors": [
+        {
+            "name": "Ed Chipman",
+            "homepage": "http://www.edchipman.ca",
+            "role": "Developer"
+        }
+    ],
+    "require":
+    {
+        "silverstripe/framework": ">=3.1.1,<3.2",
         "silverstripe/spamprotection": "1.2.*",
-		"composer/installers": "*"
-	},
-	"support": {
-		"issues": "https://github.com/undefinedoffset/silverstripe-nocaptcha/issues"
-	},
-	"extra": {
-		"installer-name": "nocaptcha"
-	}
+        "composer/installers": "*"
+    },
+    "support": {
+        "issues": "https://github.com/undefinedoffset/silverstripe-nocaptcha/issues"
+    },
+    "extra": {
+        "installer-name": "nocaptcha"
+    }
 }
