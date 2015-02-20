@@ -85,7 +85,7 @@ class NocaptchaField extends FormField {
         
         Requirements::javascript(NOCAPTCHA_BASE.'/javascript/NocaptchaField.js');
         Requirements::customScript(
-            "var _noCaptchaFields=_noCaptchaFields || [];_noCaptchaFields.push('".$this->getName()."');"
+            "var _noCaptchaFields=_noCaptchaFields || [];_noCaptchaFields.push('".$this->ID()."');"
         );
         Requirements::customScript(
             "(function() {\n" .
