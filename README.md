@@ -4,7 +4,7 @@ A spam protector and form field using the new Google's reCAPTCHA 2 aka [No Captc
 
 ## Requirements
 * SilverStripe 3.1.x
-* [SilverStripe Spam Protection 1.2.x](https://github.com/silverstripe/silverstripe-spamprotection/)
+* [SilverStripe Spam Protection >1.1 (dev-master)](https://github.com/silverstripe/silverstripe-spamprotection/)
 * PHP CURL
 
 ## Installation
