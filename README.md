@@ -3,8 +3,8 @@ Nocaptcha
 A spam protector and form field using the new Google's reCAPTCHA 2 aka [No Captcha](http://googleonlinesecurity.blogspot.ca/2014/12/are-you-robot-introducing-no-captcha.html).
 
 ## Requirements
-* SilverStripe 3.1.x
-* [SilverStripe Spam Protection 1.2.x+](https://github.com/silverstripe/silverstripe-spamprotection/)
+* SilverStripe 3.x
+* [SilverStripe Spam Protection 2.x](https://github.com/silverstripe/silverstripe-spamprotection/)
 * PHP CURL
 
 ## Installation
