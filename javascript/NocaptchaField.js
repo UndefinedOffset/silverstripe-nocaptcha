@@ -7,6 +7,7 @@ function noCaptchaFieldRender() {
             'sitekey': field.getAttribute('data-sitekey'),
             'theme': field.getAttribute('data-theme'),
             'type': field.getAttribute('data-type'),
+            'size': field.getAttribute('data-size'),
             'callback': (field.getAttribute('data-callback') ? verifyCallback : undefined )
         };
         
