@@ -33,6 +33,7 @@ NocaptchaField:
     verify_ssl: true #Allows you to disable php-curl's SSL peer verification by setting this to false (optional, defaults to true)
     default_theme: "light" #Default theme color (optional, light or dark, defaults to light)
     default_type: "image" #Default captcha type (optional, image or audio, defaults to image)
+    default_size: "compact" #Default theme color (optional, normal or compact, defaults to compact)
     proxy_server: "" #Your proxy server address (optional)
     proxy_auth: "" #Your proxy server authentication information (optional)
 ```
