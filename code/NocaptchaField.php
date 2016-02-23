@@ -44,7 +44,14 @@ class NocaptchaField extends FormField {
      * @default image
      */
     private static $default_type='image';
-    
+
+    /**
+     * Captcha size, currently options are normal and compact
+     * @var string
+     * @default normal
+     */
+    private static $default_size='normal';
+
     /**
      * Captcha theme, currently options are light and dark
      * @var string
@@ -56,7 +63,13 @@ class NocaptchaField extends FormField {
      * @var string
      */
     private $_captchaType;
-    
+
+    /**
+     * Captcha size, currently options are normal and compact
+     * @var string
+     */
+    private $_captchaSize;
+
     /**
      * Creates a new Recaptcha 2 field.
      * @param {string} $name The internal field name, passed to forms.
@@ -68,6 +81,7 @@ class NocaptchaField extends FormField {
         
         $this->_captchaTheme=self::config()->default_theme;
         $this->_captchaType=self::config()->default_type;
+        $this->_captchaSize=self::config()->default_size;
     }
     
     /**
@@ -188,6 +202,26 @@ class NocaptchaField extends FormField {
      */
     public function getCaptchaType() {
         return $this->_captchaType;
+    }
+
+
+    /**
+     * Sets the size for this captcha
+     * @param {string} $value Size to set it to, currently the api supports normal and compact
+     * @return {NocaptchaField}
+     */
+    public function setCaptchaSize($value) {
+        $this->_captchaSize=$value;
+
+        return $this;
+    }
+
+    /**
+     * Gets the size for this captcha
+     * @return {string}
+     */
+    public function getCaptchaSize() {
+        return $this->_captchaSize;
     }
     
     /**
