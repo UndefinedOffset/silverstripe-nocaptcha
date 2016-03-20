@@ -1,0 +1,5 @@
+de:
+  NocaptchaField:
+    EMPTY: "Bitte Spam-Schutz ausfüllen. Aktivieren Sie JavaScript falls Sie kein Spam-Schutz Feld sehen."
+    NOSCRIPT: "Sie müssen JavaScript aktivieren um dieses Frmular zu übermitteln"
+    VALIDATE_ERROR: "Spam-Schutz konnte nicht geprüft werden"
