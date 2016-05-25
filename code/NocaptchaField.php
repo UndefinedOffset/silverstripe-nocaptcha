@@ -79,6 +79,8 @@ class NocaptchaField extends FormField {
     public function __construct($name, $title=null, $value=null) {
         parent::__construct($name, $title, $value);
         
+        $this->title = $title;
+        
         $this->_captchaTheme=self::config()->default_theme;
         $this->_captchaType=self::config()->default_type;
         $this->_captchaSize=self::config()->default_size;
