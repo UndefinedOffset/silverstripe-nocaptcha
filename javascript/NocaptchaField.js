@@ -11,6 +11,7 @@ function noCaptchaFieldRender() {
             'callback': (field.getAttribute('data-callback') ? verifyCallback : undefined )
         };
         
-        grecaptcha.render(field, options);
+        var widget_id = grecaptcha.render(field, options);
+        field.setAttribute("data-widgetid", widget_id);
     }
 }
