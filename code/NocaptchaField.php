@@ -46,7 +46,7 @@ class NocaptchaField extends FormField {
     private static $default_type='image';
 
     /**
-     * Captcha size, currently options are normal and compact
+     * Captcha size, currently options are normal, compact and invisible
      * @var string
      * @default normal
      */
@@ -209,7 +209,7 @@ class NocaptchaField extends FormField {
 
     /**
      * Sets the size for this captcha
-     * @param {string} $value Size to set it to, currently the api supports normal and compact
+     * @param {string} $value Size to set it to, currently the api supports normal, compact and invisible
      * @return {NocaptchaField}
      */
     public function setCaptchaSize($value) {
