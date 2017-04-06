@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.3.0](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/0.3.0) (2017-04-06)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/0.2.0...0.3.0)
+
+**Merged pull requests:**
+
+- Store widget\_id on field element [\#25](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/25) ([sheadawson](https://github.com/sheadawson))
+
 ## [0.2.0](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/0.2.0) (2016-09-30)
 [Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/0.1.5...0.2.0)
 
