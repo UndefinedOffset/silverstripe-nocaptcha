@@ -72,9 +72,9 @@ class NocaptchaField extends FormField {
 
     /**
      * Creates a new Recaptcha 2 field.
-     * @param {string} $name The internal field name, passed to forms.
-     * @param {string} $title The human-readable field label.
-     * @param {mixed} $value The value of the field (unused)
+     * @param string $name The internal field name, passed to forms.
+     * @param string $title The human-readable field label.
+     * @param mixed $value The value of the field (unused)
      */
     public function __construct($name, $title=null, $value=null) {
         parent::__construct($name, $title, $value);
@@ -88,8 +88,8 @@ class NocaptchaField extends FormField {
     
     /**
      * Adds in the requirements for the field
-     * @param {array} $properties Array of properties for the form element (not used)
-     * @return {string} Rendered field template
+     * @param array $properties Array of properties for the form element (not used)
+     * @return string Rendered field template
      */
     public function Field($properties=array()) {
         $siteKey=self::config()->site_key;
@@ -105,12 +105,12 @@ class NocaptchaField extends FormField {
         );
         Requirements::customScript(
             "(function() {\n" .
-            "    var gr = document.createElement('script'); gr.type = 'text/javascript'; gr.async = true;\n" .
-            "    gr.src = ('https:' == document.location.protocol ? 'https://www' : 'http://www') + " .
-            "'.google.com/recaptcha/api.js?render=explicit&hl=" .
-            i18n::get_lang_from_locale(i18n::get_locale()) .
-            "&onload=noCaptchaFieldRender';\n" .
-            "    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gr, s);\n" .
+                "var gr = document.createElement('script'); gr.type = 'text/javascript'; gr.async = true;\n" .
+                "gr.src = ('https:' == document.location.protocol ? 'https://www' : 'http://www') + " .
+                "'.google.com/recaptcha/api.js?render=explicit&hl=" .
+                i18n::get_lang_from_locale(i18n::get_locale()) .
+                "&onload=noCaptchaFieldRender';\n" .
+                "var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gr, s);\n" .
             "})();\n",
             'NocaptchaField-lib'
         );
@@ -120,8 +120,8 @@ class NocaptchaField extends FormField {
     
     /**
      * Validates the captcha against the Recaptcha2 API
-     * @param {Validator} $validator Validator to send errors to
-     * @return {bool} Returns boolean true if valid false if not
+     * @param Validator $validator Validator to send errors to
+     * @return bool Returns boolean true if valid false if not
      */
     public function validate($validator) {
         if(!isset($_REQUEST['g-recaptcha-response'])) {
@@ -170,8 +170,8 @@ class NocaptchaField extends FormField {
     
     /**
      * Sets the theme for this captcha
-     * @param {string} $value Theme to set it to, currently the api supports light and dark
-     * @return {NocaptchaField}
+     * @param string $value Theme to set it to, currently the api supports light and dark
+     * @return NocaptchaField
      */
     public function setTheme($value) {
         $this->_captchaTheme=$value;
@@ -181,7 +181,7 @@ class NocaptchaField extends FormField {
     
     /**
      * Gets the theme for this captcha
-     * @return {string}
+     * @return string
      */
     public function getCaptchaTheme() {
         return $this->_captchaTheme;
@@ -189,8 +189,8 @@ class NocaptchaField extends FormField {
     
     /**
      * Sets the type for this captcha
-     * @param {string} $value Type to set it to, currently the api supports audio and image
-     * @return {NocaptchaField}
+     * @param string $value Type to set it to, currently the api supports audio and image
+     * @return NocaptchaField
      */
     public function setCaptchaType($value) {
         $this->_captchaType=$value;
@@ -200,7 +200,7 @@ class NocaptchaField extends FormField {
     
     /**
      * Gets the type for this captcha
-     * @return {string}
+     * @return string
      */
     public function getCaptchaType() {
         return $this->_captchaType;
@@ -209,8 +209,8 @@ class NocaptchaField extends FormField {
 
     /**
      * Sets the size for this captcha
-     * @param {string} $value Size to set it to, currently the api supports normal, compact and invisible
-     * @return {NocaptchaField}
+     * @param string $value Size to set it to, currently the api supports normal, compact and invisible
+     * @return NocaptchaField
      */
     public function setCaptchaSize($value) {
         $this->_captchaSize=$value;
@@ -220,7 +220,7 @@ class NocaptchaField extends FormField {
 
     /**
      * Gets the size for this captcha
-     * @return {string}
+     * @return string
      */
     public function getCaptchaSize() {
         return $this->_captchaSize;
@@ -228,10 +228,18 @@ class NocaptchaField extends FormField {
     
     /**
      * Gets the site key configured via NocaptchaField.site_key this is used in the template
-     * @return {string}
+     * @return string
      */
     public function getSiteKey() {
         return self::config()->site_key;
+    }
+    
+    /**
+     * Gets the form's id
+     * @return string
+     */
+    public function getFormID() {
+        return ($this->form ? $this->getTemplateHelper()->generateFormID($this->form):null);
     }
 }
 ?>

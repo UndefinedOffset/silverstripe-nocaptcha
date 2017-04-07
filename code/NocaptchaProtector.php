@@ -2,7 +2,7 @@
 class NocaptchaProtector implements SpamProtector {
     /**
      * Return the Field that we will use in this protector
-     * @return {string}
+     * @return string
      */
     public function getFormField($name="Recaptcha2Field", $title='Captcha', $value=null) {
         return new NocaptchaField($name, $title);
