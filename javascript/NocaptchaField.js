@@ -33,6 +33,7 @@ function noCaptchaFieldRender() {
             'theme': field.getAttribute('data-theme'),
             'type': field.getAttribute('data-type'),
             'size': field.getAttribute('data-size'),
+            'badge': field.getAttribute('data-badge'),
             'callback': (field.getAttribute('data-callback') ? field.getAttribute('data-callback') : 'Nocaptcha-'+_noCaptchaFields[i])
         };
         
