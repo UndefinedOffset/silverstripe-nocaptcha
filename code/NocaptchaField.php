@@ -71,6 +71,12 @@ class NocaptchaField extends FormField {
     private $_captchaSize;
 
     /**
+     * Captcha badge, currently options are bottomright, bottomleft and inline
+     * @var string
+     */
+    private $_captchaBadge;
+
+    /**
      * Creates a new Recaptcha 2 field.
      * @param string $name The internal field name, passed to forms.
      * @param string $title The human-readable field label.
@@ -84,6 +90,7 @@ class NocaptchaField extends FormField {
         $this->_captchaTheme=self::config()->default_theme;
         $this->_captchaType=self::config()->default_type;
         $this->_captchaSize=self::config()->default_size;
+        $this->_captchaBadge=self::config()->default_badge;
     }
     
     /**
@@ -224,6 +231,25 @@ class NocaptchaField extends FormField {
      */
     public function getCaptchaSize() {
         return $this->_captchaSize;
+    }
+
+    /**
+     * Sets the badge position for this captcha
+     * @param string $value Badge to set it to, currently the api supports bottomright, bottomleft or inline
+     * @return NocaptchaField
+     */
+    public function setCaptchaBadge($value) {
+        $this->_captchaBadge=$value;
+
+        return $this;
+    }
+
+    /**
+     * Gets the Badge position for this captcha
+     * @return string
+     */
+    public function getCaptchaBadge() {
+        return $this->_captchaBadge;
     }
     
     /**

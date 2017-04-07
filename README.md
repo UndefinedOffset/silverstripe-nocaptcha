@@ -34,6 +34,7 @@ NocaptchaField:
     default_theme: "light" #Default theme color (optional, light or dark, defaults to light)
     default_type: "image" #Default captcha type (optional, image or audio, defaults to image)
     default_size: "normal" #Default size (optional, normal, compact or invisible, defaults to normal)
+    default_badge: "bottomright" #Default badge position (bottomright, bottomleft or inline, defaults to bottomright)
     proxy_server: "" #Your proxy server address (optional)
     proxy_auth: "" #Your proxy server authentication information (optional)
 ```
