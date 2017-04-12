@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.3.2](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/0.3.2) (2017-04-12)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/0.3.1...0.3.2)
+
+**Merged pull requests:**
+
+- Make NocaptchaField extendable by injector [\#28](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/28) ([a2nt](https://github.com/a2nt))
+- Adding in option to change position of google badge [\#27](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/27) ([Codesesh](https://github.com/Codesesh))
+
 ## [0.3.1](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/0.3.1) (2017-04-07)
 [Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/0.3.0...0.3.1)
 
