@@ -14,17 +14,30 @@ function noCaptchaFieldRender() {
         //For the invisible captcha we need to setup some callback listeners
         if(field.getAttribute('data-size')=='invisible' && field.getAttribute('data-callback')==null) {
             var form=document.getElementById(field.getAttribute('data-form'));
+            var superHandler=false;
             
-            if(form && form.addEventListener) {
-                form.addEventListener('submit', submitListener);
-            }else if(form && form.attachEvent) {
-                window.attachEvent('onsubmit', submitListener);
-            }else if(console.error) {
-                console.error('Could not attach event to the form');
+            if(typeof jQuery!='undefined' && typeof jQuery.fn.validate!='undefined') {
+                var formValidator=jQuery(form).data('validator');
+                var superHandler=formValidator.settings.submitHandler;
+                formValidator.settings.submitHandler=function(form) {
+                    grecaptcha.execute();
+                };
+            }else {
+                if(form && form.addEventListener) {
+                    form.addEventListener('submit', submitListener);
+                }else if(form && form.attachEvent) {
+                    window.attachEvent('onsubmit', submitListener);
+                }else if(console.error) {
+                    console.error('Could not attach event to the form');
+                }
             }
             
             window['Nocaptcha-'+_noCaptchaFields[i]]=function() {
-                form.submit();
+                if(typeof jQuery!='undefined' && typeof jQuery.fn.validate!='undefined' && superHandler) {
+                    superHandler(form);
+                }else {
+                    form.submit();
+                }
             };
         }
         
