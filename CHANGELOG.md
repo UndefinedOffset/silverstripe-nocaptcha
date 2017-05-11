@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.4.0](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/0.4.0) (2017-05-11)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/0.3.2...0.4.0)
+
+**Fixed bugs:**
+
+- Invisible captcha invalid form submission bug [\#29](https://github.com/UndefinedOffset/silverstripe-nocaptcha/issues/29)
+
 ## [0.3.2](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/0.3.2) (2017-04-12)
 [Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/0.3.1...0.3.2)
 
