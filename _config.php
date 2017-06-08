@@ -1,3 +1,2 @@
 <?php
-define('NOCAPTCHA_BASE', basename(dirname(__FILE__)));
-?>
+define('NOCAPTCHA_BASE', basename(dirname(__FILE__))); 
