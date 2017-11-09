@@ -11,16 +11,26 @@
             "role": "Developer"
         }
     ],
-    "require":
-    {
-        "silverstripe/framework": "~3.1",
-        "silverstripe/spamprotection": "~2.0",
-        "composer/installers": "*"
+    "require": {
+        "silverstripe/framework": "~4.0",
+        "silverstripe/vendor-plugin": "^1.0",
+        "silverstripe/spamprotection": "~3.0"
+    },
+    "autoload": {
+		"psr-4": {
+			"UndefinedOffset\\SortableGridField\\": "src/",
+			"UndefinedOffset\\SortableGridField\\Tests\\": "tests/"
+		}
     },
     "support": {
         "issues": "https://github.com/undefinedoffset/silverstripe-nocaptcha/issues"
-    },
+    }
     "extra": {
-        "installer-name": "nocaptcha"
+        "expose": [
+            "javascript"
+        ],
+		"branch-alias": {
+			"dev-master": "2.0.x-dev"
+		}
     }
 }
