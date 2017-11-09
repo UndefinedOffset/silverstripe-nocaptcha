@@ -24,7 +24,7 @@
     },
     "support": {
         "issues": "https://github.com/undefinedoffset/silverstripe-nocaptcha/issues"
-    }
+    },
     "extra": {
         "expose": [
             "javascript"
