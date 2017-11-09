@@ -1,4 +1,4 @@
 ru:
-  NocaptchaField:
+  UndefinedOffset\NoCaptcha\Forms\NocaptchaField:
     EMPTY: "Укажите ответ на капчу, если вы её не видите вам необходимо включить JavaScript."
     VALIDATE_ERROR: "Ошибка проверки капчи - попробуйте ещё раз."

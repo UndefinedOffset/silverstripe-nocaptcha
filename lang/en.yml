@@ -1,5 +1,5 @@
 en:
-    NocaptchaField:
+    UndefinedOffset\NoCaptcha\Forms\NocaptchaField:
         EMPTY: "Please answer the captcha, if you do not see the captcha please enable JavaScript"
         NOSCRIPT: "You must enable JavaScript to submit this form"
         VALIDATE_ERROR: "Captcha could not be validated"
