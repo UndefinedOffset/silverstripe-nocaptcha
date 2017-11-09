@@ -1,5 +1,19 @@
 # Change Log
 
+## [1.0.0](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/1.0.0) (2017-11-09)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/0.4.0...1.0.0)
+
+**Closed issues:**
+
+- Getting it to show the reCAPTCHA [\#33](https://github.com/UndefinedOffset/silverstripe-nocaptcha/issues/33)
+- invisible recaptcha [\#30](https://github.com/UndefinedOffset/silverstripe-nocaptcha/issues/30)
+
+**Merged pull requests:**
+
+- i18n: Russian Translation [\#36](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/36) ([a2nt](https://github.com/a2nt))
+- Fix potential multiple activations of the same noCaptchaField [\#34](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/34) ([steffen-maass](https://github.com/steffen-maass))
+- Create \_config.php [\#32](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/32) ([nfauchelle](https://github.com/nfauchelle))
+
 ## [0.4.0](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/0.4.0) (2017-05-11)
 [Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/0.3.2...0.4.0)
 
