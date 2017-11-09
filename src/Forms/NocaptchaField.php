@@ -1,6 +1,7 @@
 <?php
 namespace UndefinedOffset\NoCaptcha\Forms;
 
+use Locale;
 use SilverStripe\View\Requirements;
 use SilverStripe\i18n\i18n;
 use SilverStripe\Admin\LeftAndMain;
@@ -124,7 +125,7 @@ class NocaptchaField extends FormField {
                 "var gr = document.createElement('script'); gr.type = 'text/javascript'; gr.async = true;\n" .
                 "gr.src = ('https:' == document.location.protocol ? 'https://www' : 'http://www') + " .
                 "'.google.com/recaptcha/api.js?render=explicit&hl=" .
-                i18n::get_lang_from_locale(i18n::get_locale()) .
+                Locale::getPrimaryLanguage(i18n::get_locale()) .
                 "&onload=noCaptchaFieldRender';\n" .
                 "var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gr, s);\n" .
             "})();\n",
