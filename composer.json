@@ -18,8 +18,7 @@
     },
     "autoload": {
 		"psr-4": {
-			"UndefinedOffset\\SortableGridField\\": "src/",
-			"UndefinedOffset\\SortableGridField\\Tests\\": "tests/"
+			"UndefinedOffset\\NoCaptcha\\": "src/"
 		}
     },
     "support": {
