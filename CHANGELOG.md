@@ -1,7 +1,17 @@
 # Change Log
 
+## [2.0.0](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.0.0) (2017-11-21)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/1.0.0...2.0.0)
+
+**Implemented enhancements:**
+
+- ss4 compatibility [\#37](https://github.com/UndefinedOffset/silverstripe-nocaptcha/issues/37)
+
 ## [1.0.0](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/1.0.0) (2017-11-09)
-[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/0.4.0...1.0.0)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.0.0-alpha1...1.0.0)
+
+## [2.0.0-alpha1](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.0.0-alpha1) (2017-11-09)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/0.4.0...2.0.0-alpha1)
 
 **Closed issues:**
 
