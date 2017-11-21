@@ -1,4 +1,13 @@
 <?php
+namespace UndefinedOffset\NoCaptcha\Forms;
+
+use Locale;
+use SilverStripe\View\Requirements;
+use SilverStripe\i18n\i18n;
+use SilverStripe\Admin\LeftAndMain;
+use SilverStripe\Forms\FormField;
+
+
 class NocaptchaField extends FormField {
     /**
      * Recaptcha Site Key
@@ -106,7 +115,7 @@ class NocaptchaField extends FormField {
             user_error('You must configure Nocaptcha.site_key and Nocaptcha.secret_key, you can retrieve these at https://google.com/recaptcha', E_USER_ERROR);
         }
         
-        Requirements::javascript(NOCAPTCHA_BASE.'/javascript/NocaptchaField.js');
+        Requirements::javascript('undefinedoffset/silverstripe-nocaptcha:javascript/NocaptchaField.js');
         Requirements::customScript(
             "var _noCaptchaFields=_noCaptchaFields || [];_noCaptchaFields.push('".$this->ID()."');",
             "NocaptchaField-" . $this->ID()
@@ -116,7 +125,7 @@ class NocaptchaField extends FormField {
                 "var gr = document.createElement('script'); gr.type = 'text/javascript'; gr.async = true;\n" .
                 "gr.src = ('https:' == document.location.protocol ? 'https://www' : 'http://www') + " .
                 "'.google.com/recaptcha/api.js?render=explicit&hl=" .
-                i18n::get_lang_from_locale(i18n::get_locale()) .
+                Locale::getPrimaryLanguage(i18n::get_locale()) .
                 "&onload=noCaptchaFieldRender';\n" .
                 "var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gr, s);\n" .
             "})();\n",
@@ -133,7 +142,7 @@ class NocaptchaField extends FormField {
      */
     public function validate($validator) {
         if(!isset($_REQUEST['g-recaptcha-response'])) {
-            $validator->validationError($this->name, _t('NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), 'validation');
+            $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), 'validation');
             return false;
         }
         
@@ -158,17 +167,17 @@ class NocaptchaField extends FormField {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, self::config()->verify_ssl);
         
-        $lnm=singleton('LeftAndMain');
+        $lnm=singleton(LeftAndMain::class);
         curl_setopt($ch, CURLOPT_USERAGENT, str_replace(',', '/', 'SilverStripe '.$lnm->CMSVersion()));
         $response=json_decode(curl_exec($ch), true);
         
         if(is_array($response)) {
             if(array_key_exists('success', $response) && $response['success']==false) {
-                $validator->validationError($this->name, _t('NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), 'validation');
+                $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), 'validation');
                 return false;
             }
         }else {
-            $validator->validationError($this->name, _t('NocaptchaField.VALIDATE_ERROR', '_Captcha could not be validated'), 'validation');
+            $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.VALIDATE_ERROR', '_Captcha could not be validated'), 'validation');
             return false;
         }
         

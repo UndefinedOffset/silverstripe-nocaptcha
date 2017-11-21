@@ -3,31 +3,26 @@ Nocaptcha
 A spam protector and form field using the new Google's reCAPTCHA 2 aka [No Captcha](http://googleonlinesecurity.blogspot.ca/2014/12/are-you-robot-introducing-no-captcha.html).
 
 ## Requirements
-* SilverStripe 3.x
-* [SilverStripe Spam Protection 2.x](https://github.com/silverstripe/silverstripe-spamprotection/)
+* SilverStripe 4.x
+* [SilverStripe Spam Protection 3.x](https://github.com/silverstripe/silverstripe-spamprotection/)
 * PHP CURL
 
 ## Installation
-* Download the module from [here](https://github.com/UndefinedOffset/silverstripe-nocaptcha/archive/master.zip)
-* Extract the downloaded archive into your site root so that the destination folder is called nocaptcha, opening the extracted folder should contain \_config.php in the root along with other files/folders
-* Run dev/build?flush=all to regenerate the manifest
-
-If you prefer you may also install using composer:
 ```
 composer require undefinedoffset/silverstripe-nocaptcha
 ```
 
 After installing the module via composer or manual install you must set the spam protector to NocaptchaProtector, this needs to be set in your site's config file normally this is mysite/\_config/config.yml.
 ```yml
-FormSpamProtectionExtension:
-    default_spam_protector: NocaptchaProtector
+SilverStripe\SpamProtection\Extension\FormSpamProtectionExtension:
+    default_spam_protector: UndefinedOffset\NoCaptcha\Forms\NocaptchaProtector
 ```
 
 
 ## Configuration
 There are multiple configuration options for the field, you must set the site_key and the secret_key which you can get from the [reCAPTCHA page](https://www.google.com/recaptcha). These configuration options must be added to your site's yaml config typically this is mysite/\_config/config.yml.
 ```yml
-NocaptchaField:
+UndefinedOffset\NoCaptcha\Forms\NocaptchaField:
     site_key: "YOUR_SITE_KEY" #Your site key (required)
     secret_key: "YOUR_SECRET_KEY" #Your secret key (required)
     verify_ssl: true #Allows you to disable php-curl's SSL peer verification by setting this to false (optional, defaults to true)

@@ -1,4 +1,9 @@
 <?php
+namespace UndefinedOffset\NoCaptcha\Forms;
+
+use SilverStripe\SpamProtection\SpamProtector;
+
+
 class NocaptchaProtector implements SpamProtector {
     /**
      * Return the Field that we will use in this protector

@@ -1,7 +1,7 @@
 {
     "name": "undefinedoffset/silverstripe-nocaptcha",
     "description": "A spam protector and form field using the new Google's reCAPTCHA 2 aka No Captcha",
-    "type": "silverstripe-module",
+    "type": "silverstripe-vendormodule",
     "keywords": ["silverstripe", "recaptcha", "recaptcha2", "nocaptcha", "spamprotection"],
     "license": "BSD-3-Clause",
     "authors": [
@@ -11,16 +11,25 @@
             "role": "Developer"
         }
     ],
-    "require":
-    {
-        "silverstripe/framework": "~3.1",
-        "silverstripe/spamprotection": "~2.0",
-        "composer/installers": "*"
+    "require": {
+        "silverstripe/framework": "~4.0",
+        "silverstripe/vendor-plugin": "^1.0",
+        "silverstripe/spamprotection": "~3.0"
+    },
+    "autoload": {
+		"psr-4": {
+			"UndefinedOffset\\NoCaptcha\\": "src/"
+		}
     },
     "support": {
         "issues": "https://github.com/undefinedoffset/silverstripe-nocaptcha/issues"
     },
     "extra": {
-        "installer-name": "nocaptcha"
+        "expose": [
+            "javascript"
+        ],
+		"branch-alias": {
+			"dev-master": "2.0.x-dev"
+		}
     }
 }
