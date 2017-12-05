@@ -1,10 +1,15 @@
 var _noCaptchaFields=_noCaptchaFields || [];
 
+window.catchNocaptcha = function(e){
+    window.nocaptchaFormID = e.id.replace('_action_submit', '');
+};
+
 function noCaptchaFieldRender() {
     var submitListener=function(e) {
         e.preventDefault();
-        
-        grecaptcha.execute();
+
+        let widgetID = e.target.querySelectorAll('.g-recaptcha')[0].getAttribute('data-widgetid');
+        grecaptcha.execute( widgetID );
     };
     
     for(var i=0;i<_noCaptchaFields.length;i++) {
@@ -31,16 +36,17 @@ function noCaptchaFieldRender() {
                     console.error('Could not attach event to the form');
                 }
             }
-            
+
             window['Nocaptcha-'+_noCaptchaFields[i]]=function() {
                 if(typeof jQuery!='undefined' && typeof jQuery.fn.validate!='undefined' && superHandler) {
                     superHandler(form);
                 }else {
+                    var form=document.getElementById( window.nocaptchaFormID );
                     form.submit();
                 }
             };
         }
-        
+
         var options={
             'sitekey': field.getAttribute('data-sitekey'),
             'theme': field.getAttribute('data-theme'),
