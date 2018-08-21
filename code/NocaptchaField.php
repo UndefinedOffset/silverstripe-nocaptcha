@@ -76,6 +76,12 @@ class NocaptchaField extends FormField {
      */
     private $_captchaBadge;
 
+     /**
+     * Captcha callback
+     * @var string
+     */
+    private $_captchaCallback;
+
     /**
      * Creates a new Recaptcha 2 field.
      * @param string $name The internal field name, passed to forms.
@@ -251,6 +257,25 @@ class NocaptchaField extends FormField {
      */
     public function getCaptchaBadge() {
         return $this->_captchaBadge;
+    }
+
+    /**
+     * Sets callback
+     * @param string $value
+     * @return NocaptchaField
+     */
+    public function setCaptchaCallback($value) {
+        $this->_captchaBCallback=$value;
+
+        return $this;
+    }
+
+    /**
+     * Gets the Badge position for this captcha
+     * @return string
+     */
+    public function getCaptchaCallback() {
+        return $this->_captchaBCallback;
     }
     
     /**
