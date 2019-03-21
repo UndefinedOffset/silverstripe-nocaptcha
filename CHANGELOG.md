@@ -1,5 +1,14 @@
 # Change Log
 
+## [2.0.1](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.0.1) (2018-03-21)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.0.1...2.0.1)
+
+**Merged pull requests:**
+
+- LeftAndMain module shouldn't be required [\#44](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/44) ([a2nt](https://github.com/a2nt))
+- Suggestions for clarity of install instructions [\#45](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/45) ([a2nt](https://github.com/afoster))
+- Allow properties to use environment variables [\#48](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/48) ([scott1702](https://github.com/scott1702))
+
 ## [2.0.0](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.0.0) (2017-11-21)
 [Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.0.0-alpha2...2.0.0)
 
