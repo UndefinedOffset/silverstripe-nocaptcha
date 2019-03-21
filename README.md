@@ -1,7 +1,7 @@
 Nocaptcha
 =================
 
-Adds a "spam protection" field to SilverStripe userforms using Google's [reCAPTCHA 2](https://www.google.com/recaptcha) service. 
+Adds a "spam protection" field to SilverStripe userforms using Google's [reCAPTCHA 2](https://www.google.com/recaptcha) service.
 
 **Note, this implements reCAPTCHA 2, not 3.**
 
@@ -35,7 +35,18 @@ UndefinedOffset\NoCaptcha\Forms\NocaptchaField:
     default_size: "normal" #Default size (optional, normal, compact or invisible, defaults to normal)
     default_badge: "bottomright" #Default badge position (bottomright, bottomleft or inline, defaults to bottomright)
     proxy_server: "" #Your proxy server address (optional)
+    proxy_port: "" #Your proxy server address port (optional)
     proxy_auth: "" #Your proxy server authentication information (optional)
+
+# The following options can also be specified through Environment variables with Injector config
+SilverStripe\Core\Injector\Injector:
+  UndefinedOffset\NoCaptcha\Forms\NocaptchaField:
+    properties:
+      SiteKey: '`SS_NOCAPTCHA_SITE_KEY`'
+      SecretKey: '`SS_NOCAPTCHA_SECRET_KEY`'
+      ProxyServer: '`SS_OUTBOUND_PROXY`'
+      ProxyPort: '`SS_OUTBOUND_PROXY_PORT`'
+      ProxyAuth: '`SS_OUTBOUND_PROXY_AUTH`'
 ```
 
 ## Adding field labels
