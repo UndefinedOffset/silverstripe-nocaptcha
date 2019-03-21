@@ -33,11 +33,15 @@ function noCaptchaFieldRender() {
             }
             
             window['Nocaptcha-'+_noCaptchaFields[i]]=function() {
-                if(typeof jQuery!='undefined' && typeof jQuery.fn.validate!='undefined' && superHandler) {
-                    superHandler(form);
-                }else {
-                    form.submit();
-                }
+                return new Promise(function(resolve, reject) {
+                    if(typeof jQuery!='undefined' && typeof jQuery.fn.validate!='undefined' && superHandler) {
+                        superHandler(form);
+                    }else {
+                        form.submit();
+                    }
+                    
+                    resolve();
+                });
             };
         }
         
