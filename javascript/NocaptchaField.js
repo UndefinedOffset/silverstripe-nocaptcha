@@ -18,6 +18,9 @@ function noCaptchaFieldRender() {
             
             if(typeof jQuery!='undefined' && typeof jQuery.fn.validate!='undefined') {
                 var formValidator=jQuery(form).data('validator');
+                if (!formValidator) {
+                    formValidator=jQuery(form).validate();
+                }
                 var superHandler=formValidator.settings.submitHandler;
                 formValidator.settings.submitHandler=function(form) {
                     grecaptcha.execute();
