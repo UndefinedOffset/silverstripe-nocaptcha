@@ -1,7 +1,10 @@
 # Change Log
 
+## [2.0.2](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.0.2) (2018-03-22)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.0.1...2.0.2)
+
 ## [2.0.1](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.0.1) (2018-03-21)
-[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.0.1...2.0.1)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.0.0...2.0.1)
 
 **Merged pull requests:**
 
