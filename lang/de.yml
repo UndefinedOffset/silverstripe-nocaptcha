@@ -1,5 +1,5 @@
 de:
   UndefinedOffset\NoCaptcha\Forms\NocaptchaField:
     EMPTY: "Bitte Spam-Schutz ausfüllen. Aktivieren Sie JavaScript falls Sie kein Spam-Schutz Feld sehen."
-    NOSCRIPT: "Sie müssen JavaScript aktivieren um dieses Frmular zu übermitteln"
+    NOSCRIPT: "Sie müssen JavaScript aktivieren um dieses Formular zu übermitteln"
     VALIDATE_ERROR: "Spam-Schutz konnte nicht geprüft werden"
