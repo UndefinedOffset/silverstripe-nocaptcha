@@ -190,18 +190,19 @@ class NocaptchaField extends FormField {
             return false;
         }
 
-        $url='https://www.google.com/recaptcha/api/siteverify?secret='.self::config()->secret_key.'&response='.rawurlencode($recaptchaResponse).'&remoteip='.rawurlencode($_SERVER['REMOTE_ADDR']);
+        $secret_key=$this->_secretKey ?: self::config()->secret_key;
+        $url='https://www.google.com/recaptcha/api/siteverify?secret='.$secret_key.'&response='.rawurlencode($recaptchaResponse).'&remoteip='.rawurlencode($_SERVER['REMOTE_ADDR']);
         $ch=curl_init($url);
-        $proxy_server=$this->_proxyServer ? $this->_proxyServer : self::config()->proxy_server;
+        $proxy_server=$this->_proxyServer ?: self::config()->proxy_server;
         if(!empty($proxy_server)){
             curl_setopt($ch, CURLOPT_PROXY, $proxy_server);
 
-            $proxy_auth=$this->_proxyAuth ? $this->_proxyAuth : self::config()->proxy_auth;
+            $proxy_auth=$this->_proxyAuth ?: self::config()->proxy_auth;
             if(!empty($proxy_auth)){
                 curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_auth);
             }
 
-            $proxy_port=$this->_proxyPort ? $this->_proxyPort : self::config()->proxy_port;
+            $proxy_port=$this->_proxyPort ?: self::config()->proxy_port;
             if(!empty($proxy_port)){
                 curl_setopt($ch, CURLOPT_PROXYPORT, $proxy_port);
             }
@@ -359,4 +360,3 @@ class NocaptchaField extends FormField {
         return ($this->form ? $this->getTemplateHelper()->generateFormID($this->form):null);
     }
 }
-?>

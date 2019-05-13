@@ -18,4 +18,3 @@ class NocaptchaProtector implements SpamProtector {
      */
     public function setFieldMapping($fieldMapping) {}
 }
-?>
