@@ -9,7 +9,13 @@ function noCaptchaFieldRender() {
     
     for(var i=0;i<_noCaptchaFields.length;i++) {
         var field=document.getElementById('Nocaptcha-'+_noCaptchaFields[i]);
-        
+        var options={
+            'sitekey': field.getAttribute('data-sitekey'),
+            'theme': field.getAttribute('data-theme'),
+            'type': field.getAttribute('data-type'),
+            'size': field.getAttribute('data-size'),
+            'badge': field.getAttribute('data-badge'),
+        };
         
         //For the invisible captcha we need to setup some callback listeners
         if(field.getAttribute('data-size')=='invisible' && field.getAttribute('data-callback')==null) {
@@ -46,16 +52,11 @@ function noCaptchaFieldRender() {
                     resolve();
                 });
             };
+            
+            options.callback = 'Nocaptcha-'+_noCaptchaFields[i];
+        } else if (field.getAttribute('data-callback')) {
+            options.callback = field.getAttribute('data-callback');
         }
-        
-        var options={
-            'sitekey': field.getAttribute('data-sitekey'),
-            'theme': field.getAttribute('data-theme'),
-            'type': field.getAttribute('data-type'),
-            'size': field.getAttribute('data-size'),
-            'badge': field.getAttribute('data-badge'),
-            'callback': (field.getAttribute('data-callback') ? field.getAttribute('data-callback') : 'Nocaptcha-'+_noCaptchaFields[i])
-        };
         
         var widget_id = grecaptcha.render(field, options);
         field.setAttribute("data-widgetid", widget_id);
