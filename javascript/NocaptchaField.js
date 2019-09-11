@@ -3,7 +3,7 @@ var _noCaptchaFields=_noCaptchaFields || [];
 function noCaptchaFieldRender() {
     var submitListener=function(e) {
         e.preventDefault();
-        let widgetID = e.target.querySelectorAll('.g-recaptcha')[0].getAttribute('data-widgetid');
+        var widgetID = e.target.querySelectorAll('.g-recaptcha')[0].getAttribute('data-widgetid');
         grecaptcha.execute(widgetID);
     };
     
@@ -28,7 +28,7 @@ function noCaptchaFieldRender() {
                 }
                 var superHandler=formValidator.settings.submitHandler;
                 formValidator.settings.submitHandler=function(form) {
-                    let widgetID = form.querySelectorAll('.g-recaptcha')[0].getAttribute('data-widgetid');
+                    var widgetID = form.querySelectorAll('.g-recaptcha')[0].getAttribute('data-widgetid');
                     grecaptcha.execute(widgetID);
                 };
             }else {
