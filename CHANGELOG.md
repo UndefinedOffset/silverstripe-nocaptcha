@@ -1,5 +1,16 @@
 # Change Log
 
+## [2.0.5](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.0.4) (2019-09-16)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.0.4...2.0.5)
+
+**Fixed bugs:**
+
+- Multiple form with nocaptcha \(invisible\) on one page [\#39](https://github.com/UndefinedOffset/silverstripe-nocaptcha/issues/39)
+
+**Merged pull requests:**
+
+- Fixes issue 39 [\#54](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/54) ([christopherbolt](https://github.com/christopherbolt))
+
 ## [2.0.4](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.0.4) (2019-07-29)
 [Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.0.3...2.0.4)
 
