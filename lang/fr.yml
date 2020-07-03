@@ -1,0 +1,5 @@
+en:
+    UndefinedOffset\NoCaptcha\Forms\NocaptchaField:
+        EMPTY: "Veuillez répondre à la question Captcha. Si vous ne pouvez pas visualiser le Captcha, veuillez activer JavaScript."
+        NOSCRIPT: "Vous devez activer JavaScript pour soumettre ce formulaire"
+        VALIDATE_ERROR: "Captcha n'a pas pu être validé"
