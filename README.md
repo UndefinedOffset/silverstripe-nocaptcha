@@ -21,7 +21,10 @@ SilverStripe\SpamProtection\Extension\FormSpamProtectionExtension:
     default_spam_protector: UndefinedOffset\NoCaptcha\Forms\NocaptchaProtector
 ```
 
-Finally, add the "spam protection" field to your form fields.
+Finally, add the "spam protection" field to your form by calling ``enableSpamProtection()`` on the form object.
+```php
+$form->enableSpamProtection();
+```
 
 ## Configuration
 There are multiple configuration options for the field, you must set the site_key and the secret_key which you can get from the [reCAPTCHA page](https://www.google.com/recaptcha). These configuration options must be added to your site's yaml config typically this is mysite/\_config/config.yml.
