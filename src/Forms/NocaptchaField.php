@@ -24,6 +24,19 @@ class NocaptchaField extends FormField {
     private static $secret_key;
 
     /**
+     * Recaptcha version (2|3)
+     * @config NocaptchaField.recaptcha_version
+     */
+    private static $recaptcha_version = 2;
+
+    /**
+     * Reject spam under this score
+     *
+     * @config NocaptchaField.minimum_score
+     */
+    private static $minimum_score = 0.4;
+
+    /**
      * CURL Proxy Server location
      * @config NocaptchaField.proxy_server
      */
@@ -124,6 +137,20 @@ class NocaptchaField extends FormField {
     private $_captchaBadge;
 
     /**
+     * The verification response
+     *
+     * @var array
+     */
+    protected $verifyResponse;
+
+    /**
+     * Minimum score for this instance (0.0 = spam, 1.0 = good)
+     *
+     * @var float
+     */
+    protected $minimumScore;
+
+    /**
      * Creates a new Recaptcha 2 field.
      * @param string $name The internal field name, passed to forms.
      * @param string $title The human-readable field label.
@@ -153,33 +180,61 @@ class NocaptchaField extends FormField {
             user_error('You must configure Nocaptcha.site_key and Nocaptcha.secret_key, you can retrieve these at https://google.com/recaptcha', E_USER_ERROR);
         }
 
-        Requirements::javascript('undefinedoffset/silverstripe-nocaptcha:javascript/NocaptchaField.js');
-        Requirements::customScript(
-            "var _noCaptchaFields=_noCaptchaFields || [];_noCaptchaFields.push('".$this->ID()."');",
-            "NocaptchaField-" . $this->ID()
-        );
-        Requirements::customScript(
-            "(function() {\n" .
-                "var gr = document.createElement('script'); gr.type = 'text/javascript'; gr.async = true;\n" .
-                "gr.src = ('https:' == document.location.protocol ? 'https://www' : 'http://www') + " .
-                "'.google.com/recaptcha/api.js?render=explicit&hl=" .
-                Locale::getPrimaryLanguage(i18n::get_locale()) .
-                "&onload=noCaptchaFieldRender';\n" .
-                "var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gr, s);\n" .
-            "})();\n",
-            'NocaptchaField-lib'
-        );
+        if ($this->config()->get('recaptcha_version') == 2) {
+            Requirements::javascript('undefinedoffset/silverstripe-nocaptcha:javascript/NocaptchaField.js');
+            Requirements::customScript(
+                "var _noCaptchaFields=_noCaptchaFields || [];_noCaptchaFields.push('".$this->ID()."');",
+                "NocaptchaField-" . $this->ID()
+            );
+            Requirements::customScript(
+                "(function() {\n" .
+                    "var gr = document.createElement('script'); gr.type = 'text/javascript'; gr.async = true;\n" .
+                    "gr.src = ('https:' == document.location.protocol ? 'https://www' : 'http://www') + " .
+                    "'.google.com/recaptcha/api.js?render=explicit&hl=" .
+                    Locale::getPrimaryLanguage(i18n::get_locale()) .
+                    "&onload=noCaptchaFieldRender';\n" .
+                    "var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gr, s);\n" .
+                "})();\n",
+                'NocaptchaField-lib'
+            );
+        } else {
+            Requirements::javascript('https://www.google.com/recaptcha/api.js');
+            Requirements::customCSS('.nocaptcha { display: none !important; }', self::class);
+
+            $form = $this->getForm();
+            $helper = $form->getTemplateHelper();
+            $id = $helper->generateFormID($form);
+
+            Requirements::customScript("
+                function nocaptchaCallback(token) {
+                    document.getElementById('". $id ."').submit();
+                }",
+                'NocaptchaField-submit'
+            );
+
+            $action = $form->defaultAction();
+
+            if ($action) {
+                $action->addExtraClass('g-recaptcha');
+                $action->setAttribute('data-sitekey', $siteKey);
+                $action->setAttribute('data-callback', 'nocaptchaCallback');
+                $action->setAttribute('data-action', 'submit');
+            }
+        }
 
         return parent::Field($properties);
     }
 
     /**
-     * Validates the captcha against the Recaptcha2 API
+     * Validates the captcha against the Recaptcha API
+     *
      * @param Validator $validator Validator to send errors to
      * @return bool Returns boolean true if valid false if not
      */
     public function validate($validator) {
+
         $recaptchaResponse = Controller::curr()->getRequest()->requestVar('g-recaptcha-response');
+
         if(!isset($recaptchaResponse)) {
             $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), 'validation');
             return false;
@@ -215,11 +270,23 @@ class NocaptchaField extends FormField {
         $response=json_decode(curl_exec($ch), true);
 
         if(is_array($response)) {
+            $this->verifyResponse = $response;
+
             if(array_key_exists('success', $response) && $response['success']==false) {
                 $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), 'validation');
                 return false;
             }
-        }else {
+
+            if ($this->config()->get('recaptcha_version') == 3) {
+                $minimum = $this->getMinimumScore();
+
+                if (array_key_exists('score', $response) && $response['score'] <= $minimum) {
+                    $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.SPAM', 'Your submission has been marked as spam'), 'validation');
+
+                    return false;
+                }
+            }
+        } else {
             $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.VALIDATE_ERROR', '_Captcha could not be validated'), 'validation');
             $logger = Injector::inst()->get(LoggerInterface::class);
             $logger->error(
@@ -358,5 +425,37 @@ class NocaptchaField extends FormField {
      */
     public function getFormID() {
         return ($this->form ? $this->getTemplateHelper()->generateFormID($this->form):null);
+    }
+
+    /**
+     * @return array
+     */
+    public function getVerifyResponse()
+    {
+        return $this->verifyResponse;
+    }
+
+    /**
+     * @param float $minimumScore
+     *
+     * @return self
+     */
+    public function setMinimumScore($minimumScore)
+    {
+        $this->minimumScore = $minimumScore;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getMinimumScore()
+    {
+        if ($this->minimumScore) {
+            return $this->minimumScore;
+        }
+
+        return $this->config()->get('minimum_score');
     }
 }
