@@ -2,7 +2,7 @@ Nocaptcha
 =================
 
 Adds a "spam protection" field to SilverStripe userforms using Google's
-[reCAPTCHA 2](https://www.google.com/recaptcha) service.
+[reCAPTCHA](https://www.google.com/recaptcha) service.
 
 ## Requirements
 * SilverStripe 4.x

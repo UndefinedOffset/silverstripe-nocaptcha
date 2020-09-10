@@ -1,6 +1,6 @@
 {
     "name": "undefinedoffset/silverstripe-nocaptcha",
-    "description": "A spam protector and form field using the new Google's reCAPTCHA 2 aka No Captcha",
+    "description": "A spam protector and form field using Google's reCAPTCHA v2 or optionally a foundation v3 implementation",
     "type": "silverstripe-vendormodule",
     "keywords": ["silverstripe", "recaptcha", "recaptcha2", "nocaptcha", "spamprotection"],
     "license": "BSD-3-Clause",
