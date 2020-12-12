@@ -85,7 +85,7 @@ CommentingController::add_extension('CommentSpamProtection');
 ## Retrieving the Verify Response
 
 If you wish to manually retrieve the Site Verify response in you form action use
-the `getVerifyResponse()` methond
+the `getVerifyResponse()` method
 
 ```php
 function doSubmit($data, $form) {
