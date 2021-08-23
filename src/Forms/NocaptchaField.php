@@ -198,26 +198,24 @@ class NocaptchaField extends FormField {
                 'NocaptchaField-lib'
             );
         } else {
-            Requirements::javascript('https://www.google.com/recaptcha/api.js');
+            Requirements::javascript('https://www.google.com/recaptcha/api.js?render=' . urlencode($siteKey) . '&onload=noCaptchaFormRender');
+            Requirements::javascript('undefinedoffset/silverstripe-nocaptcha:javascript/NocaptchaField_v3.js');
             Requirements::customCSS('.nocaptcha { display: none !important; }', self::class);
 
             $form = $this->getForm();
             $helper = $form->getTemplateHelper();
             $id = $helper->generateFormID($form);
 
-            Requirements::customScript("
-                function nocaptchaCallback(token) {
-                    document.getElementById('". $id ."').submit();
-                }",
-                'NocaptchaField-submit'
+            Requirements::customScript(
+                "var _noCaptchaForms=_noCaptchaForms || [];_noCaptchaForms.push('". $id . "');",
+                'NocaptchaForm-' . $id
             );
 
             $action = $form->defaultAction();
 
             if ($action) {
-                $action->addExtraClass('g-recaptcha');
+                $action->addExtraClass('nocaptcha-v3');
                 $action->setAttribute('data-sitekey', $siteKey);
-                $action->setAttribute('data-callback', 'nocaptchaCallback');
                 $action->setAttribute('data-action', 'submit');
             }
         }
@@ -457,5 +455,14 @@ class NocaptchaField extends FormField {
         }
 
         return $this->config()->get('minimum_score');
+    }
+
+    /**
+     * Gets the version of recaptcha being used
+     * @return int
+     */
+    public function getRecaptchaVersion()
+    {
+        return $this->config()->recaptcha_version;
     }
 }
