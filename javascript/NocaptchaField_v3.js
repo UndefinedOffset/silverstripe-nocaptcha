@@ -15,9 +15,9 @@ function noCaptchaFormRender() {
             formValidator.settings.submitHandler = function (form) {
                 formValidator.cancelSubmit = true;
 
-                var button = form.querySelectorAll('.nocaptcha-v3')[0];
-                grecaptcha.execute(button.getAttribute('data-sitekey'), {action: 'submit'}).then(function (token) {
-                    document.getElementById('Nocaptcha-' + form.getAttribute('id')).value = token;
+                var input = document.getElementById('Nocaptcha-' + form.getAttribute('id'));
+                grecaptcha.execute(input.getAttribute('data-sitekey'), {action: 'submit'}).then(function (token) {
+                    input.value = token;
 
                     if (superHandler) {
                         superHandler(form);
@@ -30,15 +30,15 @@ function noCaptchaFormRender() {
             var submitListener = function(e) {
                 e.preventDefault();
 
-                var button = e.currentTarget.querySelectorAll('.nocaptcha-v3')[0];
-                grecaptcha.execute(button.getAttribute('data-sitekey'), {action: 'submit'}).then(function (token) {
+                var input = document.getElementById('Nocaptcha-' + form.getAttribute('id'));
+                grecaptcha.execute(input.getAttribute('data-sitekey'), {action: 'submit'}).then(function (token) {
                     if (form && form.addEventListener) {
                         form.removeEventListener('submit', submitListener);
                     } else if (form && form.attachEvent) {
                         window.detatchEvent('onsubmit', submitListener);
                     }
 
-                    document.getElementById('Nocaptcha-' + form.getAttribute('id')).value = token;
+                    input.value = token;
 
                     form.submit();
                 });

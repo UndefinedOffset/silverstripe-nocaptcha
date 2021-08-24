@@ -210,14 +210,6 @@ class NocaptchaField extends FormField {
                 "var _noCaptchaForms=_noCaptchaForms || [];_noCaptchaForms.push('". $id . "');",
                 'NocaptchaForm-' . $id
             );
-
-            $action = $form->defaultAction();
-
-            if ($action) {
-                $action->addExtraClass('nocaptcha-v3');
-                $action->setAttribute('data-sitekey', $siteKey);
-                $action->setAttribute('data-action', 'submit');
-            }
         }
 
         return parent::Field($properties);
