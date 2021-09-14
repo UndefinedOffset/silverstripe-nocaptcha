@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.2.0](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.2.0) (2021-09-14)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.1.2...2.2.0)
+
+**Merged pull requests:**
+
+- ENHANCEMENT: Add ability to add exempt actions from recaptcha checks [\#69](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/36) ([scott1702](https://github.com/scott1702))
+
 ## [2.1.2](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.1.2) (2021-08-24)
 [Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.1.1...2.1.2)
 
