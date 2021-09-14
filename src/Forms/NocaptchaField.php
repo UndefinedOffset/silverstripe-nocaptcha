@@ -180,10 +180,16 @@ class NocaptchaField extends FormField {
             user_error('You must configure Nocaptcha.site_key and Nocaptcha.secret_key, you can retrieve these at https://google.com/recaptcha', E_USER_ERROR);
         }
 
+        $form = $this->getForm();
+
         if ($this->config()->get('recaptcha_version') == 2) {
+            $exemptActionsString = implode("' , '", $form->getValidationExemptActions());
+
             Requirements::javascript('undefinedoffset/silverstripe-nocaptcha:javascript/NocaptchaField.js');
             Requirements::customScript(
-                "var _noCaptchaFields=_noCaptchaFields || [];_noCaptchaFields.push('".$this->ID()."');",
+                "var _noCaptchaFields=_noCaptchaFields || [];_noCaptchaFields.push('".$this->ID()."');" .
+                "var _noCaptchaValidationExemptActions=_noCaptchaValidationExemptActions || [];" .
+                "_noCaptchaValidationExemptActions.push('" . $exemptActionsString . "');",
                 "NocaptchaField-" . $this->ID()
             );
             Requirements::customScript(
@@ -202,7 +208,6 @@ class NocaptchaField extends FormField {
             Requirements::javascript('undefinedoffset/silverstripe-nocaptcha:javascript/NocaptchaField_v3.js');
             Requirements::customCSS('.nocaptcha { display: none !important; }', self::class);
 
-            $form = $this->getForm();
             $helper = $form->getTemplateHelper();
             $id = $helper->generateFormID($form);
 
