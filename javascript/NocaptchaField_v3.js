@@ -22,7 +22,7 @@ function noCaptchaFormRender() {
                     if (superHandler) {
                         superHandler(form);
                     } else {
-                        form.unbund('submit').submit();
+                        form.unbind('submit').submit();
                     }
                 });
             };
