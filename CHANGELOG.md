@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.2.1](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.2.1) (2021-10-08)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.2.0...2.2.1)
+
+**Merged pull requests:**
+
+- Fixes unbind call [\#72](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/72) ([davejtoews](https://github.com/davejtoews))
+
 ## [2.2.0](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.2.0) (2021-09-14)
 [Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.1.2...2.2.0)
 
