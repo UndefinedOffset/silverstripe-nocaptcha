@@ -45,6 +45,7 @@ UndefinedOffset\NoCaptcha\Forms\NocaptchaField:
     default_type: "image" #Default captcha type (optional, image or audio, defaults to image)
     default_size: "normal" #Default size (optional, normal, compact or invisible, defaults to normal)
     default_badge: "bottomright" #Default badge position (bottomright, bottomleft or inline, defaults to bottomright)
+    default_handle_submit: true #Default setting for whether nocaptcha should handle form submission. See "Handling form submission" below.
     proxy_server: "" #Your proxy server address (optional)
     proxy_port: "" #Your proxy server address port (optional)
     proxy_auth: "" #Your proxy server authentication information (optional)
@@ -123,6 +124,50 @@ $captchaField->setMinimumScore(0.2);
 
 For more information about version 3, including how to implement custom actions
 see https://developers.google.com/recaptcha/docs/v3
+
+## Handling form submission
+By default, the javascript included with this module will add a submit event handler to your form.
+
+If you need to handle form submissions in a special way (for example to support front-end validation),
+you can choose to handle form submit events yourself.
+
+This can be configured site-wide using the Config API
+```yml
+UndefinedOffset\NoCaptcha\Forms\NocaptchaField:
+    default_handle_submit: false
+```
+
+Or on a per form basis:
+```php
+$captchaField = $form->Fields()->fieldByName('Captcha');
+$captchaField->setHandleSubmitEvents(false);
+```
+
+With this configuration no event handlers will be added by this module to your form. Instead, a
+function will be provided called `nocaptcha_handleCaptcha` which you can call from your code
+when you're ready to submit your form. It has the following signature:
+```js
+function nocaptcha_handleCaptcha(form, callback)
+```
+`form` must be the form element, and `callback` should be a function that finally submits the form,
+though it is optional.
+
+In the simplest case, you can use it like this:
+```js
+document.addEventListener("DOMContentLoaded", function(event) {
+    // where formID is the element ID for your form
+    const form = document.getElementById(formID);
+    const submitListener = function(event) {
+        event.preventDefault();
+        let valid = true;
+        /* Your validation logic here */
+        if (valid) {
+            nocaptcha_handleCaptcha(form, form.submit.bind(form));
+        }
+    };
+    form.addEventListener('submit', submitListener);
+});
+```
 
 ## Reporting an issue
 
