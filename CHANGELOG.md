@@ -1,5 +1,23 @@
 # Change Log
 
+## [2.3.0](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.3.0) (2021-12-13)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.2.1...2.3.0)
+
+**Implemented enhancements:**
+
+- Make javascript optional [\#75](https://github.com/UndefinedOffset/silverstripe-nocaptcha/issues/75)
+
+**Merged pull requests:**
+
+- Allow developers to handle form submission separately. [\#76](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/76) ([GuySartorelli](https://github.com/GuySartorelli))
+
+## [1.0.2](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/1.0.2) (2021-12-08)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.2.1...1.0.2)
+
+**Merged pull requests:**
+
+- Update NocaptchaField.js [\#74](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/74) ([AlphaCactus](https://github.com/AlphaCactus))
+
 ## [2.2.1](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.2.1) (2021-10-08)
 [Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.2.0...2.2.1)
 
@@ -12,13 +30,22 @@
 
 **Merged pull requests:**
 
-- ENHANCEMENT: Add ability to add exempt actions from recaptcha checks [\#69](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/36) ([scott1702](https://github.com/scott1702))
+- ENHANCEMENT: Add ability to add exempt actions from recaptcha checks [\#69](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/69) ([scott1702](https://github.com/scott1702))
 
 ## [2.1.2](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.1.2) (2021-08-24)
 [Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.1.1...2.1.2)
 
+**Fixed bugs:**
+
+- reCaptcha & HTML5 Validation [\#66](https://github.com/UndefinedOffset/silverstripe-nocaptcha/issues/66)
+
 ## [2.1.1](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.1.1) (2021-08-23)
 [Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.1.0...2.1.1)
+
+**Merged pull requests:**
+
+- FIX: Set correct return type for getFormField in PHPdoc. [\#68](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/68) ([GuySartorelli](https://github.com/GuySartorelli))
+- Typo fix [\#64](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/64) ([tiller1010](https://github.com/tiller1010))
 
 ## [2.1.0](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.1.0) (2020-09-09)
 [Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.0.5...2.1.0)
