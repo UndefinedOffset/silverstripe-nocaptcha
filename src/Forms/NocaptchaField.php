@@ -83,6 +83,14 @@ class NocaptchaField extends FormField {
     private static $default_size='normal';
 
     /**
+     * Whether form submit events are handled directly by this module.
+     * If false, a function is provided that can be called by user code submit handlers.
+     * @var boolean
+     * @default true
+     */
+    private static $default_handle_submit = true;
+
+    /**
      * Recaptcha Site Key
      * Configurable via Injector config
      */
@@ -151,6 +159,13 @@ class NocaptchaField extends FormField {
     protected $minimumScore;
 
     /**
+     * Whether form submit events are handled directly by this module.
+     * If false, a function is provided that can be called by user code submit handlers.
+     * @var boolean
+     */
+    private $handleSubmitEvents;
+
+    /**
      * Creates a new Recaptcha 2 field.
      * @param string $name The internal field name, passed to forms.
      * @param string $title The human-readable field label.
@@ -165,6 +180,7 @@ class NocaptchaField extends FormField {
         $this->_captchaType=self::config()->default_type;
         $this->_captchaSize=self::config()->default_size;
         $this->_captchaBadge=self::config()->default_badge;
+        $this->handleSubmitEvents = self::config()->default_handle_submit;
     }
 
     /**
@@ -180,11 +196,33 @@ class NocaptchaField extends FormField {
             user_error('You must configure Nocaptcha.site_key and Nocaptcha.secret_key, you can retrieve these at https://google.com/recaptcha', E_USER_ERROR);
         }
 
-        $form = $this->getForm();
-
         if ($this->config()->get('recaptcha_version') == 2) {
-            $exemptActionsString = implode("' , '", $form->getValidationExemptActions());
+            $this->configureRequirementsForV2();
+        } else {
+            $this->configureRequirementsForV3();
+        }
 
+        return parent::Field($properties);
+    }
+
+    /**
+     * Configure any javascript and css requirements that are specific for recaptcha v2.
+     */
+    protected function configureRequirementsForV2()
+    {
+        Requirements::customScript(
+            "(function() {\n" .
+                "var gr = document.createElement('script'); gr.type = 'text/javascript'; gr.async = true;\n" .
+                "gr.src = ('https:' == document.location.protocol ? 'https://www' : 'http://www') + " .
+                "'.google.com/recaptcha/api.js?render=explicit&hl=" .
+                Locale::getPrimaryLanguage(i18n::get_locale()) .
+                "&onload=noCaptchaFieldRender';\n" .
+                "var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gr, s);\n" .
+            "})();\n",
+            'NocaptchaField-lib'
+        );
+        if ($this->getHandleSubmitEvents()) {
+            $exemptActionsString = implode("' , '", $this->getForm()->getValidationExemptActions());
             Requirements::javascript('undefinedoffset/silverstripe-nocaptcha:javascript/NocaptchaField.js');
             Requirements::customScript(
                 "var _noCaptchaFields=_noCaptchaFields || [];_noCaptchaFields.push('".$this->ID()."');" .
@@ -192,22 +230,26 @@ class NocaptchaField extends FormField {
                 "_noCaptchaValidationExemptActions.push('" . $exemptActionsString . "');",
                 "NocaptchaField-" . $this->ID()
             );
-            Requirements::customScript(
-                "(function() {\n" .
-                    "var gr = document.createElement('script'); gr.type = 'text/javascript'; gr.async = true;\n" .
-                    "gr.src = ('https:' == document.location.protocol ? 'https://www' : 'http://www') + " .
-                    "'.google.com/recaptcha/api.js?render=explicit&hl=" .
-                    Locale::getPrimaryLanguage(i18n::get_locale()) .
-                    "&onload=noCaptchaFieldRender';\n" .
-                    "var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gr, s);\n" .
-                "})();\n",
-                'NocaptchaField-lib'
-            );
         } else {
-            Requirements::javascript('https://www.google.com/recaptcha/api.js?render=' . urlencode($siteKey) . '&onload=noCaptchaFormRender');
-            Requirements::javascript('undefinedoffset/silverstripe-nocaptcha:javascript/NocaptchaField_v3.js');
-            Requirements::customCSS('.nocaptcha { display: none !important; }', self::class);
+            Requirements::customScript(
+                "var _noCaptchaFields=_noCaptchaFields || [];_noCaptchaFields.push('".$this->ID()."');",
+                "NocaptchaField-" . $this->ID()
+            );
+            Requirements::javascript('undefinedoffset/silverstripe-nocaptcha:javascript/NocaptchaField_noHandler_v2.js');
+        }
+    }
 
+    /**
+     * Configure any javascript and css requirements that are specific for recaptcha v3.
+     */
+    protected function configureRequirementsForV3()
+    {
+        Requirements::customCSS('.nocaptcha { display: none !important; }', self::class);
+        if ($this->getHandleSubmitEvents()) {
+            Requirements::javascript('https://www.google.com/recaptcha/api.js?render=' . urlencode($this->getSiteKey()) . '&onload=noCaptchaFormRender');
+            Requirements::javascript('undefinedoffset/silverstripe-nocaptcha:javascript/NocaptchaField_v3.js');
+
+            $form = $this->getForm();
             $helper = $form->getTemplateHelper();
             $id = $helper->generateFormID($form);
 
@@ -215,9 +257,10 @@ class NocaptchaField extends FormField {
                 "var _noCaptchaForms=_noCaptchaForms || [];_noCaptchaForms.push('". $id . "');",
                 'NocaptchaForm-' . $id
             );
+        } else {
+            Requirements::javascript('https://www.google.com/recaptcha/api.js?render=' . urlencode($this->getSiteKey()));
+            Requirements::javascript('undefinedoffset/silverstripe-nocaptcha:javascript/NocaptchaField_noHandler_v3.js');
         }
-
-        return parent::Field($properties);
     }
 
     /**
@@ -292,6 +335,28 @@ class NocaptchaField extends FormField {
 
 
         return true;
+    }
+
+    /**
+     * Sets whether form submit events are handled directly by this module.
+     *
+     * @param boolean $value
+     * @return NocaptchaField
+     */
+    public function setHandleSubmitEvents(bool $value)
+    {
+        $this->handleSubmitEvents = $value;
+        return $this;
+    }
+
+    /**
+     * Get whether form submit events are handled directly by this module.
+     *
+     * @return boolean
+     */
+    public function getHandleSubmitEvents(): bool
+    {
+        return $this->handleSubmitEvents;
     }
 
     /**
