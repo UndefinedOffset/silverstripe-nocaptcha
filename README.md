@@ -5,7 +5,7 @@ Adds a "spam protection" field to SilverStripe userforms using Google's
 [reCAPTCHA](https://www.google.com/recaptcha) service.
 
 ## Requirements
-* SilverStripe 4.x
+* SilverStripe 5.x
 * [SilverStripe Spam Protection
   3.x](https://github.com/silverstripe/silverstripe-spamprotection/)
 * PHP CURL

@@ -12,10 +12,11 @@
         }
     ],
     "require": {
-        "silverstripe/framework": "~4.0",
-        "silverstripe/vendor-plugin": "^1.0",
-        "silverstripe/spamprotection": "~3.0"
+        "silverstripe/framework": "^4 | ^5",
+        "silverstripe/spamprotection": "^3 | ^4"
     },
+    "prefer-stable": true,
+    "minimum-stability": "dev",
     "autoload": {
 		"psr-4": {
 			"UndefinedOffset\\NoCaptcha\\": "src/"
@@ -31,5 +32,11 @@
 		"branch-alias": {
 			"dev-master": "2.0.x-dev"
 		}
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "silverstripe/vendor-plugin": true
+        }
     }
 }
