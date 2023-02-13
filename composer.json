@@ -32,11 +32,5 @@
 		"branch-alias": {
 			"dev-master": "2.0.x-dev"
 		}
-    },
-    "config": {
-        "allow-plugins": {
-            "composer/installers": true,
-            "silverstripe/vendor-plugin": true
-        }
     }
 }

@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.4.0](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.4.0) (TBD)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.3.0...2.4.0)
+
+**Merged pull requests:**
+
+- Add support for silverstripe 5. [\#79](https://github.com/UndefinedOffset/silverstripe-nocaptcha/pull/79) ([satrun77](https://github.com/satrun77))
+
 ## [2.3.0](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.3.0) (2021-12-13)
 [Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.2.1...2.3.0)
 
