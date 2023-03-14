@@ -310,7 +310,7 @@ class NocaptchaField extends FormField {
         if(is_array($response)) {
             $this->verifyResponse = $response;
 
-            if(array_key_exists('success', $response) && $response['success']==false) {
+            if(!array_key_exists('success', $response) || $response['success']==false) {
                 $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), 'validation');
                 return false;
             }
