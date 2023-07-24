@@ -33,7 +33,7 @@ $form->enableSpamProtection();
 There are multiple configuration options for the field, you must set the
 site_key and the secret_key which you can get from the [reCAPTCHA
 page](https://www.google.com/recaptcha). These configuration options must be
-added to your site's yaml config typically this is mysite/\_config/config.yml.
+added to your site's yaml config typically this is app/\_config/config.yml.
 ```yml
 UndefinedOffset\NoCaptcha\Forms\NocaptchaField:
     site_key: "YOUR_SITE_KEY" #Your site key (required)
