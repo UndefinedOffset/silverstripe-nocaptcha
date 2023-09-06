@@ -1,0 +1,5 @@
+sk:
+  UndefinedOffset\NoCaptcha\Forms\NocaptchaField:
+    EMPTY: 'Vyplňte ochranu proti spamu. Ak nevidíte pole ochrany pred spamom, musíte povoliť JavaScript.'
+    NOSCRIPT: 'Ak chcete odoslať tento formulár, musíte povoliť JavaScript.'
+    VALIDATE_ERROR: 'Nepodarilo sa overiť ochranu proti spamu'
