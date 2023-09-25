@@ -1,14 +1,14 @@
 <?php
 namespace UndefinedOffset\NoCaptcha\Forms;
 
-use Locale;
-use SilverStripe\i18n\i18n;
 use Psr\Log\LoggerInterface;
-use SilverStripe\Forms\FormField;
-use SilverStripe\View\Requirements;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Injector\Injector;
-
+use SilverStripe\Forms\FormField;
+use SilverStripe\i18n\i18n;
+use SilverStripe\ORM\ValidationResult;
+use SilverStripe\View\Requirements;
+use Locale;
 
 class NocaptchaField extends FormField {
     /**
@@ -244,7 +244,6 @@ class NocaptchaField extends FormField {
      */
     protected function configureRequirementsForV3()
     {
-        Requirements::customCSS('.nocaptcha { display: none !important; }', self::class);
         if ($this->getHandleSubmitEvents()) {
             Requirements::javascript('https://www.google.com/recaptcha/api.js?render=' . urlencode($this->getSiteKey()) . '&onload=noCaptchaFormRender');
             Requirements::javascript('undefinedoffset/silverstripe-nocaptcha:javascript/NocaptchaField_v3.js');
@@ -266,7 +265,7 @@ class NocaptchaField extends FormField {
     /**
      * Validates the captcha against the Recaptcha API
      *
-     * @param Validator $validator Validator to send errors to
+     * @param \SilverStripe\Forms\Validator $validator Validator to send errors to
      * @return bool Returns boolean true if valid false if not
      */
     public function validate($validator) {
@@ -274,7 +273,7 @@ class NocaptchaField extends FormField {
         $recaptchaResponse = Controller::curr()->getRequest()->requestVar('g-recaptcha-response');
 
         if(!isset($recaptchaResponse)) {
-            $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), 'validation');
+            $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), ValidationResult::TYPE_ERROR);
             return false;
         }
 
@@ -311,7 +310,7 @@ class NocaptchaField extends FormField {
             $this->verifyResponse = $response;
 
             if(!array_key_exists('success', $response) || $response['success']==false) {
-                $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), 'validation');
+                $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), ValidationResult::TYPE_ERROR);
                 return false;
             }
 
@@ -319,13 +318,13 @@ class NocaptchaField extends FormField {
                 $minimum = $this->getMinimumScore();
 
                 if (array_key_exists('score', $response) && $response['score'] <= $minimum) {
-                    $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.SPAM', 'Your submission has been marked as spam'), 'validation');
+                    $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.SPAM', 'Your submission has been marked as spam'), ValidationResult::TYPE_ERROR);
 
                     return false;
                 }
             }
         } else {
-            $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.VALIDATE_ERROR', '_Captcha could not be validated'), 'validation');
+            $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.VALIDATE_ERROR', '_Captcha could not be validated'), ValidationResult::TYPE_ERROR);
             $logger = Injector::inst()->get(LoggerInterface::class);
             $logger->error(
                 'Captcha validation failed as request was not successful.'

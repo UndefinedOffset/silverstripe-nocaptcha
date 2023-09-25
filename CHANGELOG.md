@@ -1,5 +1,15 @@
 # Change Log
 
+## [2.4.2](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.4.2) (2023-09-25)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.4.1...2.4.2)
+
+**Fixed bugs:**
+
+- recpatcha V3 does not show anything if score is too low [\#81](https://github.com/UndefinedOffset/silverstripe-nocaptcha/issues/81)
+
+## [2.4.1](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.4.1) (2023-09-06)
+[Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.4.0...2.4.1)
+
 ## [2.4.0](https://github.com/UndefinedOffset/silverstripe-nocaptcha/tree/2.4.0) (2023-05-08)
 [Full Changelog](https://github.com/UndefinedOffset/silverstripe-nocaptcha/compare/2.3.0...2.4.0)
 
