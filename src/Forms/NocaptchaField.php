@@ -2,6 +2,7 @@
 namespace UndefinedOffset\NoCaptcha\Forms;
 
 use Psr\Log\LoggerInterface;
+use SilverStripe\Admin\LeftAndMain;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Forms\FormField;
@@ -303,7 +304,9 @@ class NocaptchaField extends FormField {
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, self::config()->verify_ssl);
-        curl_setopt($ch, CURLOPT_USERAGENT, str_replace(',', '/', 'SilverStripe'));
+
+        $lnm = LeftAndMain::singleton();
+        curl_setopt($ch, CURLOPT_USERAGENT, str_replace( ',', '/', 'Silverstripe ' . $lnm->CMSVersion()));
         $response=json_decode(curl_exec($ch), true);
 
         if(is_array($response)) {
