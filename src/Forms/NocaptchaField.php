@@ -305,8 +305,7 @@ class NocaptchaField extends FormField {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, self::config()->verify_ssl);
 
-        $lnm = LeftAndMain::singleton();
-        curl_setopt($ch, CURLOPT_USERAGENT, str_replace( ',', '/', 'Silverstripe ' . $lnm->CMSVersion()));
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Silverstripe ' . LeftAndMain::singleton()->getVersionProvider()->getVersion());
         $response=json_decode(curl_exec($ch), true);
 
         if(is_array($response)) {
