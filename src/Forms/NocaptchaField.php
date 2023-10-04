@@ -274,7 +274,7 @@ class NocaptchaField extends FormField {
         $recaptchaResponse = Controller::curr()->getRequest()->requestVar('g-recaptcha-response');
 
         if(!isset($recaptchaResponse)) {
-            $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), ValidationResult::TYPE_ERROR);
+            $validator->validationError($this->name, _t(NocaptchaField::class . '.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), ValidationResult::TYPE_ERROR);
             return false;
         }
 
@@ -313,7 +313,7 @@ class NocaptchaField extends FormField {
             $this->verifyResponse = $response;
 
             if(!array_key_exists('success', $response) || $response['success']==false) {
-                $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), ValidationResult::TYPE_ERROR);
+                $validator->validationError($this->name, _t(NocaptchaField::class . '.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), ValidationResult::TYPE_ERROR);
                 return false;
             }
 
@@ -321,13 +321,13 @@ class NocaptchaField extends FormField {
                 $minimum = $this->getMinimumScore();
 
                 if (array_key_exists('score', $response) && $response['score'] <= $minimum) {
-                    $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.SPAM', 'Your submission has been marked as spam'), ValidationResult::TYPE_ERROR);
+                    $validator->validationError($this->name, _t(NocaptchaField::class . '.SPAM', 'Your submission has been marked as spam'), ValidationResult::TYPE_ERROR);
 
                     return false;
                 }
             }
         } else {
-            $validator->validationError($this->name, _t('UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.VALIDATE_ERROR', '_Captcha could not be validated'), ValidationResult::TYPE_ERROR);
+            $validator->validationError($this->name, _t(NocaptchaField::class . '.VALIDATE_ERROR', '_Captcha could not be validated'), ValidationResult::TYPE_ERROR);
             $logger = Injector::inst()->get(LoggerInterface::class);
             $logger->error(
                 'Captcha validation failed as request was not successful.'
