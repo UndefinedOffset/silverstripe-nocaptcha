@@ -194,7 +194,7 @@ class NocaptchaField extends FormField {
         $secretKey=$this->_secretKey ? $this->_secretKey : self::config()->secret_key;
 
         if(empty($siteKey) || empty($secretKey)) {
-            user_error('You must configure Nocaptcha.site_key and Nocaptcha.secret_key, you can retrieve these at https://google.com/recaptcha', E_USER_ERROR);
+            user_error('You must configure UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.site_key and UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.secret_key, you can retrieve these at https://google.com/recaptcha', E_USER_ERROR);
         }
 
         if ($this->config()->get('recaptcha_version') == 2) {
