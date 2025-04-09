@@ -1,13 +1,12 @@
 Nocaptcha
 =================
 
-Adds a "spam protection" field to SilverStripe userforms using Google's
+Adds a "spam protection" field to Silverstripe userforms using Google's
 [reCAPTCHA](https://www.google.com/recaptcha) service.
 
 ## Requirements
-* SilverStripe ^4 | ^5
-* [SilverStripe Spam Protection
-  ^2 | ^3](https://github.com/silverstripe/silverstripe-spamprotection/)
+* Silverstripe framework ^6
+* [Silverstripe Spam Protection ^4](https://github.com/silverstripe/silverstripe-spamprotection/)
 * PHP CURL
 
 ## Installation
@@ -172,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 ## Reporting an issue
 
 When you're reporting an issue please ensure you specify what version of
-SilverStripe you are using i.e. 3.1.3, 3.2beta, master etc. Also be sure to
+Silverstripe you are using i.e. 3.1.3, 3.2beta, master etc. Also be sure to
 include any JavaScript or PHP errors you receive, for PHP errors please ensure
 you include the full stack trace. Also please include how you produced the
 issue. You may also be asked to provide some of the classes to aid in
