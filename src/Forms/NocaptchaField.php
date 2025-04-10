@@ -7,7 +7,7 @@ use SilverStripe\Control\Controller;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Forms\FormField;
 use SilverStripe\i18n\i18n;
-use SilverStripe\ORM\ValidationResult;
+use SilverStripe\Core\Validation\ValidationResult;
 use SilverStripe\View\Requirements;
 use Locale;
 
@@ -265,77 +265,74 @@ class NocaptchaField extends FormField {
 
     /**
      * Validates the captcha against the Recaptcha API
-     *
-     * @param \SilverStripe\Forms\Validator $validator Validator to send errors to
-     * @return bool Returns boolean true if valid false if not
      */
-    public function validate($validator) {
+    public function validate(): ValidationResult
+    {
+        $this->beforeExtending('updateValidate', function(ValidationResult $result) {
+            $recaptchaResponse = Controller::curr()->getRequest()->requestVar('g-recaptcha-response');
 
-        $recaptchaResponse = Controller::curr()->getRequest()->requestVar('g-recaptcha-response');
-
-        if(!isset($recaptchaResponse)) {
-            $validator->validationError($this->name, _t(NocaptchaField::class . '.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), ValidationResult::TYPE_ERROR);
-            return false;
-        }
-
-        if(!function_exists('curl_init')) {
-            user_error('You must enable php-curl to use this field', E_USER_ERROR);
-            return false;
-        }
-
-        $secret_key=$this->_secretKey ?: self::config()->secret_key;
-        $url='https://www.google.com/recaptcha/api/siteverify?secret='.$secret_key.'&response='.rawurlencode($recaptchaResponse).'&remoteip='.rawurlencode($_SERVER['REMOTE_ADDR']);
-        $ch=curl_init($url);
-        $proxy_server=$this->_proxyServer ?: self::config()->proxy_server;
-        if(!empty($proxy_server)){
-            curl_setopt($ch, CURLOPT_PROXY, $proxy_server);
-
-            $proxy_auth=$this->_proxyAuth ?: self::config()->proxy_auth;
-            if(!empty($proxy_auth)){
-                curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_auth);
+            if(!isset($recaptchaResponse)) {
+                $result->addFieldError($this->name, _t(NocaptchaField::class . '.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), ValidationResult::TYPE_ERROR);
+                return;
             }
 
-            $proxy_port=$this->_proxyPort ?: self::config()->proxy_port;
-            if(!empty($proxy_port)){
-                curl_setopt($ch, CURLOPT_PROXYPORT, $proxy_port);
-            }
-        }
-
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, self::config()->verify_ssl);
-
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Silverstripe ' . LeftAndMain::singleton()->getVersionProvider()->getVersion());
-        $response=json_decode(curl_exec($ch), true);
-
-        if(is_array($response)) {
-            $this->verifyResponse = $response;
-
-            if(!array_key_exists('success', $response) || $response['success']==false) {
-                $validator->validationError($this->name, _t(NocaptchaField::class . '.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), ValidationResult::TYPE_ERROR);
-                return false;
+            if(!function_exists('curl_init')) {
+                user_error('You must enable php-curl to use this field', E_USER_ERROR);
+                return;
             }
 
-            if ($this->config()->get('recaptcha_version') == 3) {
-                $minimum = $this->getMinimumScore();
+            $secret_key=$this->_secretKey ?: self::config()->secret_key;
+            $url='https://www.google.com/recaptcha/api/siteverify?secret='.$secret_key.'&response='.rawurlencode($recaptchaResponse).'&remoteip='.rawurlencode($_SERVER['REMOTE_ADDR']);
+            $ch=curl_init($url);
+            $proxy_server=$this->_proxyServer ?: self::config()->proxy_server;
+            if(!empty($proxy_server)){
+                curl_setopt($ch, CURLOPT_PROXY, $proxy_server);
 
-                if (array_key_exists('score', $response) && $response['score'] <= $minimum) {
-                    $validator->validationError($this->name, _t(NocaptchaField::class . '.SPAM', 'Your submission has been marked as spam'), ValidationResult::TYPE_ERROR);
+                $proxy_auth=$this->_proxyAuth ?: self::config()->proxy_auth;
+                if(!empty($proxy_auth)){
+                    curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_auth);
+                }
 
-                    return false;
+                $proxy_port=$this->_proxyPort ?: self::config()->proxy_port;
+                if(!empty($proxy_port)){
+                    curl_setopt($ch, CURLOPT_PROXYPORT, $proxy_port);
                 }
             }
-        } else {
-            $validator->validationError($this->name, _t(NocaptchaField::class . '.VALIDATE_ERROR', '_Captcha could not be validated'), ValidationResult::TYPE_ERROR);
-            $logger = Injector::inst()->get(LoggerInterface::class);
-            $logger->error(
-                'Captcha validation failed as request was not successful.'
-            );
-            return false;
-        }
 
+            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, self::config()->verify_ssl);
 
-        return true;
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Silverstripe ' . LeftAndMain::singleton()->getVersionProvider()->getVersion());
+            $response=json_decode(curl_exec($ch), true);
+
+            if(is_array($response)) {
+                $this->verifyResponse = $response;
+
+                if(!array_key_exists('success', $response) || $response['success']==false) {
+                    $result->addFieldError($this->name, _t(NocaptchaField::class . '.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), ValidationResult::TYPE_ERROR);
+                    return;
+                }
+
+                if ($this->config()->get('recaptcha_version') == 3) {
+                    $minimum = $this->getMinimumScore();
+
+                    if (array_key_exists('score', $response) && $response['score'] <= $minimum) {
+                        $result->addFieldError($this->name, _t(NocaptchaField::class . '.SPAM', 'Your submission has been marked as spam'), ValidationResult::TYPE_ERROR);
+                        return;
+                    }
+                }
+            } else {
+                $result->addFieldError($this->name, _t(NocaptchaField::class . '.VALIDATE_ERROR', '_Captcha could not be validated'), ValidationResult::TYPE_ERROR);
+                $logger = Injector::inst()->get(LoggerInterface::class);
+                $logger->error(
+                    'Captcha validation failed as request was not successful.'
+                );
+                return;
+            }
+        });
+
+        return parent::validate();
     }
 
     /**
