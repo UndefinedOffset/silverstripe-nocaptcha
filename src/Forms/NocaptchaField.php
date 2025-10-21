@@ -5,13 +5,15 @@ use Psr\Log\LoggerInterface;
 use SilverStripe\Admin\LeftAndMain;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Injector\Injector;
+use SilverStripe\Core\Validation\ValidationResult;
 use SilverStripe\Forms\FormField;
 use SilverStripe\i18n\i18n;
-use SilverStripe\Core\Validation\ValidationResult;
 use SilverStripe\View\Requirements;
+use InvalidArgumentException;
 use Locale;
 
-class NocaptchaField extends FormField {
+class NocaptchaField extends FormField
+{
     /**
      * Recaptcha Site Key
      * @config NocaptchaField.site_key
@@ -60,28 +62,28 @@ class NocaptchaField extends FormField {
      * @config NocaptchaField.verify_ssl
      * @default true
      */
-    private static $verify_ssl=true;
+    private static $verify_ssl = true;
 
     /**
      * Captcha theme, currently options are light and dark
      * @var string
      * @default light
      */
-    private static $default_theme='light';
+    private static $default_theme = 'light';
 
     /**
      * Captcha type, currently options are audio and image
      * @var string
      * @default image
      */
-    private static $default_type='image';
+    private static $default_type = 'image';
 
     /**
      * Captcha size, currently options are normal, compact and invisible
      * @var string
      * @default normal
      */
-    private static $default_size='normal';
+    private static $default_size = 'normal';
 
     /**
      * Whether form submit events are handled directly by this module.
@@ -172,15 +174,16 @@ class NocaptchaField extends FormField {
      * @param string $title The human-readable field label.
      * @param mixed $value The value of the field (unused)
      */
-    public function __construct($name, $title=null, $value=null) {
+    public function __construct($name, $title = null, $value = null)
+    {
         parent::__construct($name, $title, $value);
 
-        $this->title=$title;
+        $this->title = $title;
 
-        $this->_captchaTheme=self::config()->default_theme;
-        $this->_captchaType=self::config()->default_type;
-        $this->_captchaSize=self::config()->default_size;
-        $this->_captchaBadge=self::config()->default_badge;
+        $this->_captchaTheme = self::config()->default_theme;
+        $this->_captchaType = self::config()->default_type;
+        $this->_captchaSize = self::config()->default_size;
+        $this->_captchaBadge = self::config()->default_badge;
         $this->handleSubmitEvents = self::config()->default_handle_submit;
     }
 
@@ -189,12 +192,13 @@ class NocaptchaField extends FormField {
      * @param array $properties Array of properties for the form element (not used)
      * @return string Rendered field template
      */
-    public function Field($properties=array()) {
-        $siteKey=$this->getSiteKey();
-        $secretKey=$this->_secretKey ? $this->_secretKey : self::config()->secret_key;
+    public function Field($properties = [])
+    {
+        $siteKey = $this->getSiteKey();
+        $secretKey = $this->_secretKey ? $this->_secretKey : self::config()->secret_key;
 
-        if(empty($siteKey) || empty($secretKey)) {
-            user_error('You must configure UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.site_key and UndefinedOffset\\NoCaptcha\\Forms\\NocaptchaField.secret_key, you can retrieve these at https://google.com/recaptcha', E_USER_ERROR);
+        if (empty($siteKey) || empty($secretKey)) {
+            throw new InvalidArgumentException('You must configure ' . NocaptchaField::class . '.site_key and ' . NocaptchaField::class . '.secret_key, you can retrieve these at https://google.com/recaptcha');
         }
 
         if ($this->config()->get('recaptcha_version') == 2) {
@@ -226,14 +230,14 @@ class NocaptchaField extends FormField {
             $exemptActionsString = implode("' , '", $this->getForm()->getValidationExemptActions());
             Requirements::javascript('undefinedoffset/silverstripe-nocaptcha:javascript/NocaptchaField.js');
             Requirements::customScript(
-                "var _noCaptchaFields=_noCaptchaFields || [];_noCaptchaFields.push('".$this->ID()."');" .
+                "var _noCaptchaFields=_noCaptchaFields || [];_noCaptchaFields.push('" . $this->ID() . "');" .
                 "var _noCaptchaValidationExemptActions=_noCaptchaValidationExemptActions || [];" .
                 "_noCaptchaValidationExemptActions.push('" . $exemptActionsString . "');",
                 "NocaptchaField-" . $this->ID()
             );
         } else {
             Requirements::customScript(
-                "var _noCaptchaFields=_noCaptchaFields || [];_noCaptchaFields.push('".$this->ID()."');",
+                "var _noCaptchaFields=_noCaptchaFields || [];_noCaptchaFields.push('" . $this->ID() . "');",
                 "NocaptchaField-" . $this->ID()
             );
             Requirements::javascript('undefinedoffset/silverstripe-nocaptcha:javascript/NocaptchaField_noHandler_v2.js');
@@ -254,7 +258,7 @@ class NocaptchaField extends FormField {
             $id = $helper->generateFormID($form);
 
             Requirements::customScript(
-                "var _noCaptchaForms=_noCaptchaForms || [];_noCaptchaForms.push('". $id . "');",
+                "var _noCaptchaForms=_noCaptchaForms || [];_noCaptchaForms.push('" . $id . "');",
                 'NocaptchaForm-' . $id
             );
         } else {
@@ -268,33 +272,28 @@ class NocaptchaField extends FormField {
      */
     public function validate(): ValidationResult
     {
-        $this->beforeExtending('updateValidate', function(ValidationResult $result) {
+        $this->beforeExtending('updateValidate', function (ValidationResult $result) {
             $recaptchaResponse = Controller::curr()->getRequest()->requestVar('g-recaptcha-response');
 
-            if(!isset($recaptchaResponse)) {
+            if (!isset($recaptchaResponse)) {
                 $result->addFieldError($this->name, _t(NocaptchaField::class . '.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), ValidationResult::TYPE_ERROR);
                 return;
             }
 
-            if(!function_exists('curl_init')) {
-                user_error('You must enable php-curl to use this field', E_USER_ERROR);
-                return;
-            }
-
-            $secret_key=$this->_secretKey ?: self::config()->secret_key;
-            $url='https://www.google.com/recaptcha/api/siteverify?secret='.$secret_key.'&response='.rawurlencode($recaptchaResponse).'&remoteip='.rawurlencode($_SERVER['REMOTE_ADDR']);
-            $ch=curl_init($url);
-            $proxy_server=$this->_proxyServer ?: self::config()->proxy_server;
-            if(!empty($proxy_server)){
+            $secret_key = $this->_secretKey ?: self::config()->secret_key;
+            $url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . rawurlencode($recaptchaResponse) . '&remoteip=' . rawurlencode($_SERVER['REMOTE_ADDR']);
+            $ch = curl_init($url);
+            $proxy_server = $this->_proxyServer ?: self::config()->proxy_server;
+            if (!empty($proxy_server)) {
                 curl_setopt($ch, CURLOPT_PROXY, $proxy_server);
 
-                $proxy_auth=$this->_proxyAuth ?: self::config()->proxy_auth;
-                if(!empty($proxy_auth)){
+                $proxy_auth = $this->_proxyAuth ?: self::config()->proxy_auth;
+                if (!empty($proxy_auth)) {
                     curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_auth);
                 }
 
-                $proxy_port=$this->_proxyPort ?: self::config()->proxy_port;
-                if(!empty($proxy_port)){
+                $proxy_port = $this->_proxyPort ?: self::config()->proxy_port;
+                if (!empty($proxy_port)) {
                     curl_setopt($ch, CURLOPT_PROXYPORT, $proxy_port);
                 }
             }
@@ -304,12 +303,12 @@ class NocaptchaField extends FormField {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, self::config()->verify_ssl);
 
             curl_setopt($ch, CURLOPT_USERAGENT, 'Silverstripe ' . LeftAndMain::singleton()->getVersionProvider()->getVersion());
-            $response=json_decode(curl_exec($ch), true);
+            $response = json_decode(curl_exec($ch), true);
 
-            if(is_array($response)) {
+            if (is_array($response)) {
                 $this->verifyResponse = $response;
 
-                if(!array_key_exists('success', $response) || $response['success']==false) {
+                if (!array_key_exists('success', $response) || $response['success'] == false) {
                     $result->addFieldError($this->name, _t(NocaptchaField::class . '.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), ValidationResult::TYPE_ERROR);
                     return;
                 }
@@ -362,8 +361,9 @@ class NocaptchaField extends FormField {
      * @param string $value Theme to set it to, currently the api supports light and dark
      * @return NocaptchaField
      */
-    public function setTheme($value) {
-        $this->_captchaTheme=$value;
+    public function setTheme($value)
+    {
+        $this->_captchaTheme = $value;
 
         return $this;
     }
@@ -372,7 +372,8 @@ class NocaptchaField extends FormField {
      * Gets the theme for this captcha
      * @return string
      */
-    public function getCaptchaTheme() {
+    public function getCaptchaTheme()
+    {
         return $this->_captchaTheme;
     }
 
@@ -381,8 +382,9 @@ class NocaptchaField extends FormField {
      * @param string $value Type to set it to, currently the api supports audio and image
      * @return NocaptchaField
      */
-    public function setCaptchaType($value) {
-        $this->_captchaType=$value;
+    public function setCaptchaType($value)
+    {
+        $this->_captchaType = $value;
 
         return $this;
     }
@@ -391,7 +393,8 @@ class NocaptchaField extends FormField {
      * Gets the type for this captcha
      * @return string
      */
-    public function getCaptchaType() {
+    public function getCaptchaType()
+    {
         return $this->_captchaType;
     }
 
@@ -401,8 +404,9 @@ class NocaptchaField extends FormField {
      * @param string $value Size to set it to, currently the api supports normal, compact and invisible
      * @return NocaptchaField
      */
-    public function setCaptchaSize($value) {
-        $this->_captchaSize=$value;
+    public function setCaptchaSize($value)
+    {
+        $this->_captchaSize = $value;
 
         return $this;
     }
@@ -411,7 +415,8 @@ class NocaptchaField extends FormField {
      * Gets the size for this captcha
      * @return string
      */
-    public function getCaptchaSize() {
+    public function getCaptchaSize()
+    {
         return $this->_captchaSize;
     }
 
@@ -420,8 +425,9 @@ class NocaptchaField extends FormField {
      * @param string $value Badge to set it to, currently the api supports bottomright, bottomleft or inline
      * @return NocaptchaField
      */
-    public function setCaptchaBadge($value) {
-        $this->_captchaBadge=$value;
+    public function setCaptchaBadge($value)
+    {
+        $this->_captchaBadge = $value;
 
         return $this;
     }
@@ -430,7 +436,8 @@ class NocaptchaField extends FormField {
      * Gets the Badge position for this captcha
      * @return string
      */
-    public function getCaptchaBadge() {
+    public function getCaptchaBadge()
+    {
         return $this->_captchaBadge;
     }
 
@@ -438,51 +445,58 @@ class NocaptchaField extends FormField {
      * Gets the site key configured via NocaptchaField.site_key this is used in the template
      * @return string
      */
-    public function getSiteKey() {
+    public function getSiteKey()
+    {
         return $this->_sitekey ? $this->_sitekey : self::config()->site_key;
     }
 
     /**
      * Setter for _siteKey to allow injector config to override the value
      */
-    public function setSiteKey($key) {
-        $this->_sitekey=$key;
+    public function setSiteKey($key)
+    {
+        $this->_sitekey = $key;
     }
 
     /**
      * Setter for _secretKey to allow injector config to override the value
      */
-    public function setSecretKey($key) {
-        $this->_secretKey=$key;
+    public function setSecretKey($key)
+    {
+        $this->_secretKey = $key;
     }
 
     /**
      * Setter for _proxyServer to allow injector config to override the value
      */
-    public function setProxyServer($server) {
-        $this->_proxyServer=$server;
+    public function setProxyServer($server)
+    {
+        $this->_proxyServer = $server;
     }
 
     /**
      * Setter for _proxyAuth to allow injector config to override the value
      */
-    public function setProxyAuth($auth) {
-        $this->_proxyAuth=$auth;
+    public function setProxyAuth($auth)
+    {
+        $this->_proxyAuth = $auth;
     }
 
     /**
      * Setter for _proxyPort to allow injector config to override the value
      */
-    public function setProxyPort($port) {
-        $this->_proxyPort=$port;
+    public function setProxyPort($port)
+    {
+        $this->_proxyPort = $port;
     }
 
     /**
      * Gets the form's id
      * @return string
      */
-    public function getFormID() {
-        return ($this->form ? $this->getTemplateHelper()->generateFormID($this->form):null);
+    public function getFormID()
+    {
+        return ($this->form ? $this->getTemplateHelper()->generateFormID($this->form) : null);
     }
 
     /**

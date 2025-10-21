@@ -13,7 +13,8 @@
     ],
     "require": {
         "silverstripe/framework": "^6",
-        "silverstripe/spamprotection": "^5"
+        "silverstripe/spamprotection": "^5",
+        "ext-curl": "*"
     },
     "prefer-stable": true,
     "minimum-stability": "dev",
