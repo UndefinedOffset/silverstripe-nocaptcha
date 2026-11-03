@@ -273,7 +273,7 @@ class NocaptchaField extends FormField
     public function validate(): ValidationResult
     {
         $this->beforeExtending('updateValidate', function (ValidationResult $result) {
-            $recaptchaResponse = Controller::curr()->getRequest()->requestVar('g-recaptcha-response');
+            $recaptchaResponse = Controller::curr()?->getRequest()->requestVar('g-recaptcha-response');
 
             if (!isset($recaptchaResponse)) {
                 $result->addFieldError($this->name, _t(NocaptchaField::class . '.EMPTY', '_Please answer the captcha, if you do not see the captcha you must enable JavaScript'), ValidationResult::TYPE_ERROR);
